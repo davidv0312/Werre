@@ -1,0 +1,39 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [8.742627, 52.078706]
+      },
+      "properties": {
+        "name": "Messpunkt 1",
+        "description": "Bad Saluflen, Begabad"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [8.686644, 52.106940]
+      },
+      "properties": {
+        "name": "Messpunkt 2",
+        "description": "Herford, H2O"
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [8.675587, 52.126188]
+      },
+      "properties": {
+        "name": "Messpunkt 3",
+        "description": "Herford, Kaufland"
+      }
+    }    
+  ]
+}
+

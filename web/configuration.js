@@ -20,6 +20,9 @@ var SWAC_config = {
     ],
     datasources: [
         {
+        url: "/Werre/data/[fromName]"
+        },
+        {
              url: "/SWAC/data/[fromName]"             
         },
         {

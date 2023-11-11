@@ -1,0 +1,25 @@
+{
+    "records": [
+        {
+            "latitude": "52.078706",
+            "longitude": "8.742627",
+            "name": "Messpunkt 1",
+            "description": "Bad Saluflen, Begabad",
+            "id": 1
+        },
+        {
+            "latitude": "52.106940",
+            "longitude": "8.686644",
+            "name": "Messpunkt 2",
+            "description": "Herford, H2O",
+            "id": 2
+        },
+        {
+            "latitude": "52.126188",
+            "longitude": "8.675587",
+            "name": "Messpunkt 3",
+            "description": "Herford, Kaufland",
+            "id": 3
+        }
+    ]
+}
