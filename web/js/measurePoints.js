@@ -23,12 +23,14 @@ document.addEventListener('DOMContentLoaded', async function() {
             let filepath = 'data/openMeteoData/' + filename;
             
             try {
+                
                 let currentData = await sendCoordinatesToAPI(filepath);
+                
                 if (currentData) {  
                     
-                    map.swac_comp.addData(currentData); //HIER PROBLEM! Wie json objekt zur Karte hinzufügen?
+                    sendJsonData(currentData);
                     
-                    // map.swac_comp.addDataFromReference('ref://openMeteoData/' + filename); // DAS HIER GEHT!
+                    map.swac_comp.addDataFromReference('ref://openMeteoData/' + filename); 
                     
                     console.log('x = ' + currentData.latitude + '| y = ' + currentData.longitude);
                 }
@@ -38,6 +40,22 @@ document.addEventListener('DOMContentLoaded', async function() {
         }       
     }, 1000); 
 });
+
+function sendJsonData(currentData) {
+    let jsonString = JSON.stringify(currentData);
+
+    fetch('/Werre/updateJson', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(jsonString)
+    })
+    .then(response => response.text())
+    .then(data => console.log(data))
+    .catch((error) => console.error('Error:', error));
+}
+
 
 
 async function sendCoordinatesToAPI(filepath) {
