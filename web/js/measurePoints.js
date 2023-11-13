@@ -17,7 +17,7 @@ window["DataShowModal_measurePoints_options"] = {
 document.addEventListener('DOMContentLoaded', async function() { 
     setTimeout(async function() { 
         let map = document.querySelector('#measurePoints');   
-        let n = 3; // Anzahl mp-Dateien             
+        let n = 15; // Anzahl mp-Dateien             
         for (let i = 1; i <= n; i++) {
             let filename = 'mp' + i + '.json';
             let filepath = 'data/openMeteoData/' + filename;
