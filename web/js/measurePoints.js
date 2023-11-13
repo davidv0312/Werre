@@ -9,7 +9,7 @@ measurePoints_options.plugins.set('DataShowModal', {
 });
 
 window["DataShowModal_measurePoints_options"] = {
-    attrsShown: ['latitude', 'longitude', 'name', 'description'],
+    attrsShown: ['latitude', 'longitude', 'time', 'temp', 'soil_temperature_0cm', 'soil_temperature_6cm', 'soil_temperature_18cm', 'soil_temperature_54cm'],
     attrsFormat: new Map()
 };
 
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 function sendJsonData(currentData, filename) {
     const dataToSend = {
-        currentData: currentData,  // Hier ist currentData selbst ein JSON-Objekt
+        currentData: currentData,  
         filename: filename
     };
 

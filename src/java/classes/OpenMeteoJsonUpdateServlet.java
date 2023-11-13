@@ -20,9 +20,9 @@ import com.google.gson.JsonObject;
 
 
 @WebServlet("/updateJson")
-public class JsonUpdateServlet extends HttpServlet {
+public class OpenMeteoJsonUpdateServlet extends HttpServlet {
 
-    private static final Logger LOGGER = Logger.getLogger(JsonUpdateServlet.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(OpenMeteoJsonUpdateServlet.class.getName());
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -34,6 +34,8 @@ public class JsonUpdateServlet extends HttpServlet {
         JsonObject jsonObj = jsonElement.getAsJsonObject();
 
         jsonString = jsonObj.get("currentData").toString();
+        
+        jsonString = OpenMeteoJsonFormatter.extractLatestWeatherData(jsonString);
 
         String filename = jsonObj.get("filename").getAsString();        
          
@@ -61,14 +63,15 @@ public class JsonUpdateServlet extends HttpServlet {
         path = path + "web/data/openMeteoData/" + filename; 
         LOGGER.info("Pfad zur JSON-Datei: " + path);
 
-        try {
-            // Schreiben in die Datei
+        try {            
             Files.write(Paths.get(path), decodedJson.getBytes());
             LOGGER.info("JSON-String wurde in die Datei geschrieben: " + decodedJson);
         } catch (IOException e) {
             LOGGER.severe("Fehler beim Schreiben in die Datei: " + e.getMessage());
         }
     }
+    
+   
 }
 
 
