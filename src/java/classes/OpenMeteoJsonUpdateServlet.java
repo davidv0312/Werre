@@ -17,13 +17,28 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonObject;
 
-
-
+/**
+ * This class writes a json-String from the OpenMeteoWeatherForecastAPI into the file that was used 
+ * to recieve Weather Data from OpeneMeteo from Coordinates (latitude and longitude)
+ */
 @WebServlet("/updateJson")
 public class OpenMeteoJsonUpdateServlet extends HttpServlet {
 
+    /**
+     * Logger for console output
+     */
     private static final Logger LOGGER = Logger.getLogger(OpenMeteoJsonUpdateServlet.class.getName());
 
+    /**
+     * Processes POST requests by reading JSON strings from the request body, formatting them and writing them to a file.
+     * 
+     * @param request   The HttpServletRequest object that represents the POST request. It should contain a json-String in 
+     *                  the request body that contains the data required for processing (a Json-String and the origin filename)
+     * @param response  The HttpServletResponse object that is used to return a response
+     *                  to the client. It is not used directly in this method, but it is required to fulfil the Servlet API convention 
+     * @throws ServletException If a server-specific problem occurs
+     * @throws IOException If an error occus while reading the config-file or writing to the json-files
+     */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         LOGGER.info("Empfang einer POST-Anfrage");

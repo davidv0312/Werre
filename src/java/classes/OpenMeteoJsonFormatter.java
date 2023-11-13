@@ -1,4 +1,3 @@
-
 package classes;
 
 import com.google.gson.JsonObject;
@@ -8,8 +7,19 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+/**
+ * This class formats json-Strings recieved from the OpeneMeteoWeatherForecastAPI
+ * to json-Strings that can be used with the SWAC-DataShowModal plugin
+ */
 public class OpenMeteoJsonFormatter {
 
+    /**
+     * Formats a json-String recieved from the OpeneMeteoWeatherForecastAPI
+     * to a json-String that can be used with the SWAC-DataShowModal plugin
+     * 
+     * @param jsonData a json-String from the OpeneMeteoWeatherForecastAPI
+     * @return a json-String that can be used with the SWAC-DataShowModal plugin. It only contains weather-data for the last hour.
+     */
     public static String extractLatestWeatherData(String jsonData) {
         JsonObject jsonObject = JsonParser.parseString(jsonData).getAsJsonObject();
 
