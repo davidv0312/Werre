@@ -12,6 +12,12 @@ import java.util.stream.Collectors;
 import jakarta.servlet.annotation.WebServlet;
 import java.util.Properties;
 import java.io.InputStream;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
+
+
 
 @WebServlet("/updateJson")
 public class JsonUpdateServlet extends HttpServlet {
@@ -23,7 +29,19 @@ public class JsonUpdateServlet extends HttpServlet {
         LOGGER.info("Empfang einer POST-Anfrage");
 
         String jsonString = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        LOGGER.info("Empfangener JSON-String: " + jsonString);   
+
+        JsonElement jsonElement = JsonParser.parseString(jsonString);
+        JsonObject jsonObj = jsonElement.getAsJsonObject();
+
+        jsonString = jsonObj.get("currentData").toString();
+
+        String filename = jsonObj.get("filename").getAsString();        
+         
+        LOGGER.info("JSON-String vor dekoding " + jsonString);
+
+        jsonElement = JsonParser.parseString(jsonString);
+        Gson gson = new Gson();
+        String decodedJson = gson.toJson(jsonElement);
         
         Properties prop = new Properties();
         String path;
@@ -33,29 +51,24 @@ public class JsonUpdateServlet extends HttpServlet {
                 LOGGER.severe("Konfigurationsdatei 'config.properties' konnte nicht gefunden werden");
                 return;
             }
-
-            // Laden der Konfigurationsdatei
             prop.load(input);
-
-            // Lesen des Pfades aus der Konfigurationsdatei
             path = prop.getProperty("dataFilePath");
         } catch (IOException ex) {
             LOGGER.severe("Fehler beim Laden der Konfigurationsdatei: " + ex.getMessage());
             return;
         }        
 
-        path = path + "web/data/openMeteoData/mp1.json"; 
+        path = path + "web/data/openMeteoData/" + filename; 
         LOGGER.info("Pfad zur JSON-Datei: " + path);
 
         try {
             // Schreiben in die Datei
-            Files.write(Paths.get(path), jsonString.getBytes());
-            LOGGER.info("JSON-String wurde in die Datei geschrieben: " + jsonString);
+            Files.write(Paths.get(path), decodedJson.getBytes());
+            LOGGER.info("JSON-String wurde in die Datei geschrieben: " + decodedJson);
         } catch (IOException e) {
             LOGGER.severe("Fehler beim Schreiben in die Datei: " + e.getMessage());
         }
     }
-
 }
 
 

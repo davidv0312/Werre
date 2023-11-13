@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 
                 if (currentData) {  
                     
-                    sendJsonData(currentData);
+                    sendJsonData(currentData, filename);
                     
                     map.swac_comp.addDataFromReference('ref://openMeteoData/' + filename); 
                     
@@ -41,21 +41,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     }, 1000); 
 });
 
-function sendJsonData(currentData) {
-    let jsonString = JSON.stringify(currentData);
+function sendJsonData(currentData, filename) {
+    const dataToSend = {
+        currentData: currentData,  // Hier ist currentData selbst ein JSON-Objekt
+        filename: filename
+    };
 
     fetch('/Werre/updateJson', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(jsonString)
+        body: JSON.stringify(dataToSend)
     })
     .then(response => response.text())
     .then(data => console.log(data))
     .catch((error) => console.error('Error:', error));
 }
-
 
 
 async function sendCoordinatesToAPI(filepath) {
