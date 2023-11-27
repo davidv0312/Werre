@@ -4,6 +4,7 @@
 var measurePoints_options = {
     zoom: 18,
     plugins: new Map()
+
 };
 
 /*

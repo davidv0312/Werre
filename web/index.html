@@ -6,16 +6,29 @@
     <meta name="description" content="Klimamonitoring der Werre-Region">
     <meta name="author" content="Alexander Kruse, Oskar Schaubert, Erik Schneider, David Vehlow">
     <link rel="stylesheet" type="text/css" href="SWAC/swac/libs/uikit/css/uikit.min.css">
+    <link rel="stylesheet" type="text/css" href="css/mapLegend.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <script src="SWAC/swac/libs/uikit/js/uikit.min.js"></script>
     <script src="SWAC/swac/libs/uikit/js/uikit-icons.min.js"></script>
     <script src="SWAC/swac/swac.js" type="module"></script>
     <script src="js/openMeteoFetcher.js"></script>
     <script src="js/measurePoints.js"></script>
+    
+    <script src="js/legend.js"></script>
+    <script src="js/geodataButton.js"></script>
+
 </head>
 <body>
     <main>
-        <h1>Karte der Werre-Region</h1>   
-        <div id="measurePoints" swa="Worldmap2d"></div>
+        <h1>Klimamonitoring der Werre-Region</h1>      
+        
+        <div id="select_geodata" swa="Select FROM geodataButton TEMPLATE checkboxes"></div>
+        
+        <div id="mapAndLegend">
+            <div id="measurePoints" swa="Worldmap2d"></div>
+            <img id="legend" src="" alt="">
+        </div>
+        
     </main>
 </body>
 </html>

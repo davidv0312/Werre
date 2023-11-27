@@ -3,11 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/david/Desktop/Werre/web/WEB-INF/web.xml</file>
-            <file>file:/C:/Users/david/Desktop/Werre/web/js/openMeteoFetcher.js</file>
-            <file>file:/C:/Users/david/Desktop/Werre/src/java/classes/OpenMeteoJsonUpdateServlet.java</file>
+            <file>file:/C:/Users/david/Desktop/Werre/web/css/style.css</file>
+            <file>file:/C:/Users/david/Desktop/Werre/web/js/geodataButton.js</file>
             <file>file:/C:/Users/david/Desktop/Werre/web/js/measurePoints.js</file>
-            <file>file:/C:/Users/david/Desktop/Werre/src/java/classes/OpenMeteoJsonFormatter.java</file>
+            <file>file:/C:/Users/david/Desktop/Werre/web/index.html</file>
+            <file>file:/C:/Users/david/Desktop/Werre/web/js/legend.js</file>
+            <file>file:/C:/Users/david/Desktop/Werre/web/css/mapLegend.css</file>
         </group>
     </open-files>
 </project-private>

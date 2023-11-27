@@ -1,0 +1,14 @@
+#mapAndLegend {
+    display: flex;
+    align-items: flex-start;
+}
+
+#measurePoints {
+    flex-grow: 1;
+}
+
+#legend {
+    flex-shrink: 0;
+}
+
+
