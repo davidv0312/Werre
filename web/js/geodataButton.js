@@ -1,5 +1,5 @@
 let filename = 'stadtgebiet.geojson';
-let modelFileName = 'Stadtgebiet Bielefeld';
+let modelFileName = 'Stadtgebiet Bad Oeynhausen';
 
 measurePoints_options.modelFiles = [
     {

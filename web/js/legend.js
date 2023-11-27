@@ -10,5 +10,5 @@ function toggleImage() {
 setTimeout(function() {
     var legend = document.getElementById('legend');
     legend.src = 'images/legende_bodenbedeckung.png';
-}, 500); 
+}, 2000); 
 
