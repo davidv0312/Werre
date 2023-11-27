@@ -1,3 +1,5 @@
+let set = null;
+
 document.addEventListener('DOMContentLoaded', async function() { 
     setTimeout(async function() { 
         let chart = document.querySelector('#climateCharts');
@@ -6,22 +8,28 @@ document.addEventListener('DOMContentLoaded', async function() {
         document.addEventListener('swac_measurePoints_marker_click', function (e) {
             let lat = e.detail.latlng.lat;
             let lng = e.detail.latlng.lng;
-            //TODO replace hardcoded values
-            let startDate = "2023-11-05";
-            let endDate = "2023-11-19";
-            let interval = "hourly";
+            
+            let startDate = document.getElementById('startDate').value;
+            let endDate = document.getElementById('endDate').value;
+            let interval = document.getElementById('interval').value;
             
             fetchOpenMeteoTimeseries(lat, lng, startDate, endDate, interval).then((data) => {
-                let time = data['hourly']['time'];
-                let temp = data['hourly']['temperature_2m'];
-                let rain = data['hourly']['rain'];
+                let time = data[interval]['time'];
+                let temp = data[interval]['temperature_2m'];
+                let rain = data[interval]['rain'];                
+
+                // Remove former Dataset
+                if(set !== null) {
+                    chart.swac_comp.removeAllData();
+                }
                 
                 for(let i=0;i<=time.length;i++){
                     set = {time: time[i], temp: temp[i], rain:rain[i]};
                     chart.swac_comp.addSet('Test',set);
                     console.log(set);
                 }
-                console.log('Done!');
+                console.log('Done!');               
+
 
             });
         });
@@ -32,7 +40,6 @@ document.addEventListener('DOMContentLoaded', async function() {
 climateCharts_options = {
     showWhenNoData: true,
     xAxisAtrrName: 'time',
-    yAxis1AttrName: 'rain',
     yAxis2AttrName: 'temp',
     plugins: new Map()
 };
@@ -41,17 +48,31 @@ climateCharts_options.plugins.set('Linechart', {
     id: 'Linechart',
     active: true
 });
+
+
+// Update der y-Achse, funktioniert noch nicht
+document.addEventListener('DOMContentLoaded', async function() { 
+    setTimeout(async function() { 
+        let chart = document.querySelector('#climateCharts');
+        document.getElementById('dataSelection').addEventListener('change', function() {
+            // climateCharts_options.yAxis2AttrName = document.getElementById('dataSelection').value;  
+            // chart.swac_comp.reload();
+        });         
+    },1000);
+});
+
+
                  
 
-var exampledata_list = [
-    {
-        time : "2023-11-05T01:00",
-        temp : 8.3,
-        rain: 10.2
-    },
-    {
-        time : "2023-11-07T02:00",
-        temp : 10.0,
-        rain: 11.3
-    }
-];
+//var exampledata_list = [
+//    {
+//        time : "2023-11-05T01:00",
+//        temp : 8.3,
+//        rain: 10.2
+//    },
+//    {
+//        time : "2023-11-07T02:00",
+//        temp : 10.0,
+//        rain: 11.3
+//    }
+//];

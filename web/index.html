@@ -29,7 +29,21 @@
             <div id="measurePoints" swa="Worldmap2d"></div>
             <img id="legend" src="" alt="">
         </div>
-        <div id="climateCharts" swa="Charts FROM exampledata_list"></div>
+        <br>
+        <div id="dateIntervalInput">
+            <input type="date" id="startDate" name="startDate" value="2023-11-05">
+            <input type="date" id="endDate" name="endDate" value="2023-11-19">
+            <select id="interval" name="interval">
+                <option value="hourly" selected>Stündlich</option>
+                <option value="daily">Täglich</option>
+                <option value="weekly">Wöchentlich</option>
+            </select>
+            <select id="dataSelection">
+                <option value="temp">Temperatur</option>
+                <option value="rain">Regen</option>
+               </select>
+        </div>
+        <div id="climateCharts" swa="Charts"></div>
     </main>
 </body>
 </html>
