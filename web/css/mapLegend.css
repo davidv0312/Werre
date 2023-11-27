@@ -1,6 +1,13 @@
 #mapAndLegend {
     display: flex;
     align-items: flex-start;
+    width: 92%;
+    margin: 0 auto;
+}
+
+#select_geodata {
+    width: 92%;
+    margin: 0 auto;
 }
 
 #measurePoints {
