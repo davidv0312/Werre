@@ -1,6 +1,10 @@
 package classes;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.annotation.WebServlet;
@@ -16,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Properties;
 import java.util.logging.Logger;
+import org.locationtech.jts.geom.Coordinate;
 
 @WebServlet("/getPolygons")
 public class PolygonizerServlet extends HttpServlet {
@@ -49,26 +54,43 @@ public class PolygonizerServlet extends HttpServlet {
         if (directoryListing != null) {
 
             //read through all mp-files and extract coordinates
-            List<List<Double>> stationCoordinates = new ArrayList<List<Double>>();
+            List<Coordinate> stationCoordinates = new ArrayList<>();
             for (File child : directoryListing) {
-                HashMap<String, String> json = gson.fromJson(new FileReader(child), HashMap.class);
-                double longitude = Double.parseDouble(json.get("longitude"));
-                double latitude = Double.parseDouble(json.get("latitude"));
+                
+                JsonReader jsonReader = new JsonReader(new FileReader(child.getAbsolutePath()));
+                JsonElement jsonElement = JsonParser.parseReader(jsonReader);
+                JsonObject stationJSON = jsonElement.getAsJsonObject();                            
+                
+                double longitude = stationJSON.get("longitude").getAsDouble();
+                double latitude = stationJSON.get("latitude").getAsDouble();
+                
+                Coordinate coordinate = new Coordinate(longitude, latitude);
 
-                List<Double> coord = List.of(longitude, latitude);
-                stationCoordinates.add(coord);
-
+                stationCoordinates.add(coordinate);
             }
 
-            BowyerWatson.triangulate(stationCoordinates);
+            LOGGER.info(stationCoordinates.toString());
+            List<Coordinate> triangulation = BowyerWatson.triangulate(stationCoordinates);
+
+            for(int i=0; i<triangulation.size(); i+=3){
+                Coordinate v1 = triangulation.get(i);
+                Coordinate v2 = triangulation.get(i+1);
+                Coordinate v3 = triangulation.get(i+2);
+                
+                List<Double> v1_list = List.of(v1.x, v1.y);
+                List<Double> v2_list = List.of(v2.x, v2.y);
+                List<Double> v3_list = List.of(v3.x, v3.y);
+                 
+                Polygon polygon = new Polygon(List.of(v1_list, v2_list, v3_list));
+                
+                response.setContentType("application/json");      
+                PrintWriter out = response.getWriter();  
+                out.print(polygon.toGeoJson());
+                out.flush();
+            }
 
         } else {
             LOGGER.severe("Fehler beim Laden der Messpunkte");
         }
-
-        //response.setContentType("application/json");      
-        //PrintWriter out = response.getWriter();  
-        //out.print(polygon.toGeoJson());
-        //out.flush();
     }
 }
