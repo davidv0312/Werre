@@ -72,7 +72,7 @@ public class PolygonizerServlet extends HttpServlet {
             LOGGER.info(stationCoordinates.toString());
             List<Coordinate> triangulation = BowyerWatson.triangulate(stationCoordinates);
 
-            for(int i=0; i<triangulation.size(); i+=3){
+            for(int i=0; i<triangulation.size(); i+=4){
                 Coordinate v1 = triangulation.get(i);
                 Coordinate v2 = triangulation.get(i+1);
                 Coordinate v3 = triangulation.get(i+2);

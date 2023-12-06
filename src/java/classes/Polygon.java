@@ -27,9 +27,9 @@ public class Polygon {
     public String toGeoJson() {
 
         // Ensure that the first coordinate is added again at the end
-        List<List<Double>> closedCoordinates = new ArrayList<>(coordinates);
-        List<Double> firstPoint = coordinates.get(0);
-        closedCoordinates.add(new ArrayList<>(firstPoint));
+        //List<List<Double>> closedCoordinates = new ArrayList<>(coordinates);
+        //List<Double> firstPoint = coordinates.get(0);
+        //closedCoordinates.add(new ArrayList<>(firstPoint));
 
         // Wrap the polygon in a Feature
         JsonObject featureJson = new JsonObject();
@@ -40,7 +40,7 @@ public class Polygon {
         geometryJson.addProperty("type", "Polygon");
 
         JsonArray coordinatesArray = new JsonArray();
-        coordinatesArray.add(createJsonArray(closedCoordinates));
+        coordinatesArray.add(createJsonArray(coordinates));
 
         geometryJson.add("coordinates", coordinatesArray);
         featureJson.add("geometry", geometryJson);
