@@ -25,15 +25,27 @@ public class Polygon {
     }
 
     public String toGeoJson() {
-        JsonObject geoJson = new JsonObject();
-        geoJson.addProperty("type", "Polygon");
+
+        // Ensure that the first coordinate is added again at the end
+        List<List<Double>> closedCoordinates = new ArrayList<>(coordinates);
+        List<Double> firstPoint = coordinates.get(0);
+        closedCoordinates.add(new ArrayList<>(firstPoint));
+
+        // Wrap the polygon in a Feature
+        JsonObject featureJson = new JsonObject();
+        featureJson.addProperty("type", "Feature");
+
+        // Add the polygon geometry to the Feature
+        JsonObject geometryJson = new JsonObject();
+        geometryJson.addProperty("type", "Polygon");
 
         JsonArray coordinatesArray = new JsonArray();
-        coordinatesArray.add(createJsonArray(coordinates));
+        coordinatesArray.add(createJsonArray(closedCoordinates));
 
-        geoJson.add("coordinates", coordinatesArray);
+        geometryJson.add("coordinates", coordinatesArray);
+        featureJson.add("geometry", geometryJson);
 
-        return new Gson().toJson(geoJson);
+        return new Gson().toJson(featureJson);
     }
 
     private JsonArray createJsonArray(List<List<Double>> points) {
@@ -56,7 +68,8 @@ public class Polygon {
 
         try (FileWriter writer = new FileWriter(path)) {
             // Parse JSON and write to file
-            gson.toJson(gson.fromJson(jsonString, Object.class), writer);
+            gson.toJson(gson.fromJson(jsonString, Object.class
+            ), writer);
 
             System.out.println("JSON saved to file successfully.");
         } catch (IOException e) {
