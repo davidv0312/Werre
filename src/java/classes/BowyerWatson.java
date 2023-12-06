@@ -15,10 +15,10 @@ public class BowyerWatson {
         DelaunayTriangulationBuilder builder = new DelaunayTriangulationBuilder();
 
         builder.setSites(geometryFactory.createMultiPoint(points.toArray(new Coordinate[0])));
-        QuadEdgeSubdivision subdivision = builder.getSubdivision();
+        //QuadEdgeSubdivision subdivision = builder.getSubdivision();
 
         // Get the Delaunay triangulation as a JTS Geometry
-        Geometry triangulation = subdivision.getTriangles(geometryFactory);
+        Geometry triangulation = builder.getTriangles(geometryFactory);
 
         // Extract the coordinates from the triangulation
         Coordinate[] coordinates = triangulation.getCoordinates();
