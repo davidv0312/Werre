@@ -31,7 +31,7 @@ public class Polygon {
         //List<Double> firstPoint = coordinates.get(0);
         //closedCoordinates.add(new ArrayList<>(firstPoint));
 
-        // Wrap the polygon in a Feature
+       // Wrap the polygon in a Feature
         JsonObject featureJson = new JsonObject();
         featureJson.addProperty("type", "Feature");
 
@@ -45,7 +45,16 @@ public class Polygon {
         geometryJson.add("coordinates", coordinatesArray);
         featureJson.add("geometry", geometryJson);
 
-        return new Gson().toJson(featureJson);
+        // Create a FeatureCollection and add the feature to it
+        JsonObject featureCollectionJson = new JsonObject();
+        featureCollectionJson.addProperty("type", "FeatureCollection");
+
+        JsonArray featuresArray = new JsonArray();
+        featuresArray.add(featureJson);
+
+        featureCollectionJson.add("features", featuresArray);
+
+        return new Gson().toJson(featureCollectionJson);
     }
 
     private JsonArray createJsonArray(List<List<Double>> points) {
