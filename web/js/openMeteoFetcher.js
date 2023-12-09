@@ -6,7 +6,7 @@
 function getCurrentDateFormatted() {
     let currentDate = new Date();
     let year = currentDate.getFullYear();
-    let month = currentDate.getMonth() + 1; 
+    let month = currentDate.getMonth() + 1;
     let day = currentDate.getDate();
 
     month = month < 10 ? '0' + month : month;
@@ -26,7 +26,7 @@ function getCurrentDateFormatted() {
 async function processCoordinatesToOpenMeteoRequest(latitude, longitude) {
 
     let url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relative_humidity_2m,soil_temperature_0cm,soil_temperature_6cm,soil_temperature_18cm,soil_temperature_54cm&timezone=Europe%2FBerlin&forecast_days=1`;
-    
+
     console.log('OpenMeteo-URL:', url);
     try {
         let response = await fetch(url);
@@ -35,7 +35,7 @@ async function processCoordinatesToOpenMeteoRequest(latitude, longitude) {
         }
         let data = await response.json();
         console.log('Empfangene Daten:', data);
-        return data; 
+        return data;
     } catch (error) {
         console.error('Fehler beim Abrufen der Daten:', error);
     }
@@ -51,41 +51,63 @@ async function processCoordinatesToOpenMeteoRequest(latitude, longitude) {
  * @param {string} interval - Interval of the data (can be hourly,monthly etc.) 
  * @returns {Promise<Object>} - A promise that returns an object with OpenMeteoWeatherForecast-data from a successful request.
  */
-async function fetchOpenMeteoTimeseriesHourly(latitude, longitude, startDate, endDate, interval){
-    
+async function fetchOpenMeteoTimeseriesHourly(latitude, longitude, startDate, endDate, interval) {
+
     let url = `https://archive-api.open-meteo.com/v1/archive?latitude=${latitude}&longitude=${longitude}&start_date=${startDate}&end_date=${endDate}&${interval}=temperature_2m,rain`;
 
-    try{
+    try {
         let response = await fetch(url);
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-    
-    let data = await response.json();
-    console.log('Empfangene Daten:', data);
-    return data;
-    
-    }catch(error){
+
+        let data = await response.json();
+        console.log('Empfangene Daten:', data);
+        return data;
+
+    } catch (error) {
         console.error('Fehler beim Abrufen der Daten:', error);
     }
 }
 
 
-async function fetchOpenMeteoTimeseriesDaily(latitude, longitude, startDate, endDate, interval){
-    
+async function fetchOpenMeteoTimeseriesDaily(latitude, longitude, startDate, endDate, interval) {
+
     let url = `https://archive-api.open-meteo.com/v1/archive?latitude=${latitude}&longitude=${longitude}&start_date=${startDate}&end_date=${endDate}&${interval}=temperature_2m_max,rain_sum`;
 
-    try{
+    try {
         let response = await fetch(url);
-        if(!response.ok){
+        if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
-    
-    let data = await response.json();
-    console.log('Empfangene Daten:', data);
-    return data;
-    
-    }catch(error){
+
+        let data = await response.json();
+        console.log('Empfangene Daten:', data);
+        return data;
+
+    } catch (error) {
+        console.error('Fehler beim Abrufen der Daten:', error);
+    }
+}
+
+async function fetchTriangleAverage(lon1, lat1, lon2, lat2, lon3, lat3) {
+    let url = `https://api.open-meteo.com/v1/forecast?latitude=${lat1},${lat2},${lat3}&longitude=${lon1},${lon2},${lon3}&current=temperature_2m`;
+
+    try {
+        let response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        let data = await response.json();
+        console.log('Empfangene Daten:', data);
+
+        let val1 = data[0].current.temperature_2m;
+        let val2 = data[1].current.temperature_2m;
+        let val3 = data[2].current.temperature_2m;
+        return (val1 + val2 + val3) / 3.0;
+
+    } catch (error) {
         console.error('Fehler beim Abrufen der Daten:', error);
     }
 }
