@@ -1,0 +1,23 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "measuredate": "2023-11-01T00:00:00",
+        "temperature": 16.1
+        "id": 1
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [8.639999, 52.2],
+            [8.619999, 52.12],
+            [8.68, 52.16]
+          ]
+        ]
+      }
+    }
+  ]
+}

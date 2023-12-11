@@ -107,13 +107,13 @@ function enterValues(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3, x, y)
 }
 
 function enterNoValuesFound() {    
-    document.getElementById('longOutput').innerHTML = 'Keine Werte vorhanden!';
-    document.getElementById('latOutput').innerHTML = 'Keine Werte vorhanden!';
-    document.getElementById('tempOutput').innerHTML = 'Keine Werte vorhanden!';
-    document.getElementById('soilTemp0cmOutput').innerHTML = 'Keine Werte vorhanden!';
-    document.getElementById('soilTemp6cmOutput').innerHTML = 'Keine Werte vorhanden!';
-    document.getElementById('soilTemp18cmOutput').innerHTML = 'Keine Werte vorhanden!';
-    document.getElementById('soilTemp54cmOutput').innerHTML = 'Keine Werte vorhanden!';
+    document.getElementById('longOutput').innerHTML = '-';
+    document.getElementById('latOutput').innerHTML = '-';
+    document.getElementById('tempOutput').innerHTML = '-';
+    document.getElementById('soilTemp0cmOutput').innerHTML = '-';
+    document.getElementById('soilTemp6cmOutput').innerHTML = '-';
+    document.getElementById('soilTemp18cmOutput').innerHTML = '-';
+    document.getElementById('soilTemp54cmOutput').innerHTML = '-';
 }
 
 async function findPolygon(x, y) {
@@ -151,6 +151,7 @@ async function findPolygon(x, y) {
         enterValues(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3, x, y);
     }
 }
+
 
 
 document.addEventListener('DOMContentLoaded', function () {

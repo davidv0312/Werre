@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/chart.css">
     <link rel="stylesheet" type="text/css" href="css/outputContainer.css">
+    <link rel="stylesheet" type="text/css" href="css/outputContainerLocation.css">
     <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
     <script src="SWAC/swac/libs/uikit/js/uikit.min.js"></script>
     <script src="SWAC/swac/libs/uikit/js/uikit-icons.min.js"></script>
@@ -21,7 +22,7 @@
     <script src="js/climateCharts.js"></script>
     <script src="js/heatmap.js"></script>
     <script src="js/interpolation.js"></script>
-
+    <script src="js/location.js"></script>
 </head>
 <body>
     <main>
@@ -44,7 +45,24 @@
                 </div>
             </div>
         </div>
+        <div id="outputContainerLocation">
+            <h3>Werte des eigenen Standorts</h3>
+            <div id="outputContentLocation">
+                <div id="leftOutputLocation">
+                    <div><label>Längengrad: </label><span id="longOutputLocation">-</span></div>
+                    <div><label>Breitengrad: </label><span id="latOutputLocation">-</span></div>
+                    <div><label>Temperatur: </label><span id="tempOutputLocation">-</span> °C</div>
+                </div>
+                <div id="rightOutputLocation">
+                    <div><label>Bodentemperatur (0cm): </label><span id="soilTemp0cmOutputLocation">-</span> °C</div>
+                    <div><label>Bodentemperatur (6cm): </label><span id="soilTemp6cmOutputLocation">-</span> °C</div>
+                    <div><label>Bodentemperatur (18cm): </label><span id="soilTemp18cmOutputLocation">-</span> °C</div>
+                    <div><label>Bodentemperatur (54cm): </label><span id="soilTemp54cmOutputLocation">-</span> °C</div>
+                </div>
+            </div>
+        </div>
         <br>
+        <div id="worldmap_geolocate" swa="Geolocation TEMPLATE geolocation_worldmap2d"></div>
         <div id="mapAndLegend">
             <div id="measurePoints" swa="Worldmap2d"></div>
             <img id="legend" src="" alt="">
