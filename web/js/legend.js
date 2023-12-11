@@ -12,3 +12,4 @@ setTimeout(function() {
     legend.src = 'images/legende_bodenbedeckung.png';
 }, 2000); 
 
+
