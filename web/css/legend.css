@@ -1,0 +1,28 @@
+#legendBox {
+    display: none;
+}
+
+#legend {
+    
+}
+
+#checkboxes {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px; 
+}
+
+#checkboxes div {
+    display: flex;
+    align-items: center;
+}
+
+#checkboxes input, #checkboxes label {
+    margin: 2px;
+}
+
+#legendControl {
+    margin-bottom: 10px;
+}
+
+

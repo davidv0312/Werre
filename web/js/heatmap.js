@@ -1,4 +1,4 @@
-
+let polygonNumber = 21;
 
 function getColorForTemperature(temperature) {
   let closestTemp = null;
@@ -54,8 +54,7 @@ async function loadPolygon(i) {
     return polygon;
 }
 
-async function addHeatmap() {
-    polygonNumber = 21;
+async function addHeatmap() {    
     for (let i = 0; i < polygonNumber; i++) {
         
         let color;  
@@ -72,9 +71,28 @@ async function addHeatmap() {
     }
 }
 
+function removeHeatmap() {
+    for (let i = 0 ; i < polygonNumber ; i++) {
+        document.querySelector('#measurePoints').swac_comp.removeModelFile('/Werre/data/polygons/polygon'+ i.toString()+ '.geojson');
+    }
+}
+
 setTimeout(async function () {
     addHeatmap();
 }, 3000 );
+
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById("showHeatmap").addEventListener("change", function() {
+        if (this.checked) {
+            addHeatmap();
+        } else {
+            removeHeatmap();
+        }
+    });
+});
+
+
+
 
 
 

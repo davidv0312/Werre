@@ -81,7 +81,7 @@ if ("geolocation" in navigator) {
     
     let latitude = position.coords.latitude;
     let longitude = position.coords.longitude;
-        
+            
     findPolygonLocation(longitude, latitude);
     
     

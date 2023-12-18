@@ -1,0 +1,18 @@
+0: Nicht eindeutig bestimmbar
+1: Bebauung
+1-1: Bebauung - Hochbau und Bauliche Nebenflächen
+1-2: Bebauung - Tiefbau
+2: Vegetationslos
+2-2: Vegetationslos - Lockermaterial
+2-2--1: Vegetationslos - Lockermaterial - Oberflächenmaterial Geröll, Schotter, Kies
+2-2--3: Vegetationslos - Lockermaterial - Oberflächenmaterial Erdreich
+3: Vegetation
+3-1: Vegetation - Krautige Vegetation
+3-1--1: Vegetation - KrautigeVegetation - Vegetationsmerkmal Gras
+3-1--3: Vegetation - KrautigeVegetation - Vegetationsmerkmal Getreide, Staudengewächse, Farne
+3-2--1: Vegetation - Holzige Vegetation - Vegetationsmerkmal Bäume
+3-2--2: Vegetation - Holzige Vegetation - Vegetationsmerkmal Gehölz
+4-2: Wasser - Binnengewässer
+4-2--1---1: Wasser - Binnengewässer - Fließeigenschaft Fließend - Gewässerart Fluss
+4-2--1---2: Wasser - Binnengewässer - Fließeigenschaft Fließend - Gewässerart Bach
+4-2--2---7: Wasser - Binnengewässer - Fließeigenschaft Stehend - Gewässerart See, Teich

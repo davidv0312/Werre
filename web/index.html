@@ -6,8 +6,9 @@
     <meta name="description" content="Klimamonitoring der Werre-Region">
     <meta name="author" content="Alexander Kruse, Oskar Schaubert, Erik Schneider, David Vehlow">
     <link rel="stylesheet" type="text/css" href="SWAC/swac/libs/uikit/css/uikit.min.css">
-    <link rel="stylesheet" type="text/css" href="css/mapLegend.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
+        <link rel="stylesheet" type="text/css" href="css/legend.css">
+    <link rel="stylesheet" type="text/css" href="css/map.css">
     <link rel="stylesheet" type="text/css" href="css/chart.css">
     <link rel="stylesheet" type="text/css" href="css/outputContainer.css">
     <link rel="stylesheet" type="text/css" href="css/outputContainerLocation.css">
@@ -16,7 +17,8 @@
     <script src="SWAC/swac/libs/uikit/js/uikit-icons.min.js"></script>
     <script src="SWAC/swac/swac.js" type="module"></script>
     <script src="js/openMeteoFetcher.js"></script>
-    <script src="js/measurePoints.js"></script>    
+    <script src="js/measurePoints.js"></script>   
+    <script src="js/addGeoData.js"></script>
     <script src="js/legend.js"></script>
     <script src="js/geodataButton.js"></script>
     <script src="js/climateCharts.js"></script>
@@ -28,7 +30,6 @@
 <body>
     <main>
         <h1>Klimamonitoring der Werre-Region</h1>            
-        <div id="select_geodata" swa="Select FROM geodataButton TEMPLATE checkboxes"></div>
         <div id="outputContainer">
             <h3>Werte des angeklickten Punkts</h3>
             <div id="outputContent">
@@ -62,10 +63,44 @@
             </div>
         </div>
         <br>
+        <div id="legendControl">
+            <input type="checkbox" id="toggleLegend">
+            <label for="togglelegend">Landbedeckung einblenden</label>
+        </div>
+        <div id="legendBox">
+            <img id="legend" src="" alt="Legende">
+            <div id="checkboxes">
+                <div><input type="checkbox" id="0" checked><label>Nicht eindeutig bestimmbar</label></div>
+                <div><input type="checkbox" id="1" checked><label>Bebauung</label></div>
+                <div><input type="checkbox" id="1-1" checked><label>Bebauung - Hochbau und Bauliche Nebenflächen</label></div>
+                <div><input type="checkbox" id="1-2" checked><label>Bebauung - Tiefbau</label></div>
+                <div><input type="checkbox" id="2" checked><label>Vegetationslos</label></div>
+                <div><input type="checkbox" id="2-2" checked><label>Vegetationslos - Lockermaterial</label></div>
+                <div><input type="checkbox" id="2-2--1" checked><label>Vegetationslos - Lockermaterial - Oberflächenmaterial Geröll, Schotter, Kies</label></div>
+                <div><input type="checkbox" id="2-2--3" checked><label>Vegetationslos - Lockermaterial - Oberflächenmaterial Erdreich</label></div>
+                <div><input type="checkbox" id="3" checked><label>Vegetation</label></div>
+                <div><input type="checkbox" id="3-1" checked><label></label>Vegetation - Krautige Vegetation</div>
+                <div><input type="checkbox" id="3-1--1" checked><label></label>Vegetation - KrautigeVegetation - Vegetationsmerkmal Gras</div>
+                <div><input type="checkbox" id="3-1--3" checked><label></label>Vegetation - KrautigeVegetation - Vegetationsmerkmal Getreide, Staudengewächse, Farne</div>
+                <div><input type="checkbox" id="3-2--1" checked><label></label>Vegetation - Holzige Vegetation - Vegetationsmerkmal Bäume</div>
+                <div><input type="checkbox" id="3-2--2" checked><label></label>Vegetation - Holzige Vegetation - Vegetationsmerkmal Gehölz</div>
+                <div><input type="checkbox" id="4-2" checked><label></label>Wasser - Binnengewässer</div>
+                <div><input type="checkbox" id="4-2--1---1" checked><label></label>Wasser - Binnengewässer - Fließeigenschaft Fließend - Gewässerart Fluss</div>
+                <div><input type="checkbox" id="4-2--1---2" checked><label></label>Wasser - Binnengewässer - Fließeigenschaft Fließend - Gewässerart Bach</div>
+                <div><input type="checkbox" id="4-2--2---7" checked><label>Wasser - Binnengewässer - Fließeigenschaft Stehend - Gewässerart See, Teich</label></div>
+                <hr>
+                <div><input type="checkbox" id="all" checked><label>Alle ein/ausblenden</label></div>
+            </div>
+        </div>
+        <br>
+        <div>
+            <input type="checkbox" id="showHeatmap" checked>
+            <label for="showHeatmap">Heatmap anzeigen</label>
+        </div>
+        <br>
         <div id="worldmap_geolocate" swa="Geolocation TEMPLATE geolocation_worldmap2d"></div>
-        <div id="mapAndLegend">
-            <div id="measurePoints" swa="Worldmap2d"></div>
-            <img id="legend" src="" alt="">
+        <div id="map">
+            <div id="measurePoints" swa="Worldmap2d"></div>            
         </div>        
         <br>
         <div id="dateIntervalInput">
