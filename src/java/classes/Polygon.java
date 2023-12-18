@@ -11,9 +11,10 @@ import java.util.List;
 public class Polygon {
 
     private List<List<Double>> coordinates;
+    private double avgTemp;
 
-    public Polygon(List<List<Double>> coordinates) {
-        this.coordinates = coordinates;
+    public Polygon(List<List<Double>> coordinates, double avg_temp, String date) {
+        this.coordinates = coordinates;        
     }
 
     public List<List<Double>> getCoordinates() {
