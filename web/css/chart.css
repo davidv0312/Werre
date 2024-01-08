@@ -1,5 +1,5 @@
 #climateCharts {
-    width: 50%; 
+    width: 80%; 
     height: 300px; 
     margin: 0 auto;
 }
@@ -7,6 +7,31 @@
 #dateIntervalInput {
     width: 50%; 
     margin: 0 auto;
+}
+
+#compClimateCharts {
+    width: 80%; 
+    height: 300px; 
+    margin: 0 auto;
+}
+
+#compDateIntervalInput {
+    width: 40%; 
+    margin: 0 auto;
+}
+
+#compHeadline {
+    text-align: center;
+}
+
+#chartHeadline {
+    text-align: center;
+}
+
+#chartSelector {
+    display: block;  
+    margin: 0 auto;  
+    width: max-content; 
 }
 
 

@@ -20,8 +20,9 @@ public class OpenMeteoJsonFormatter {
      * @param jsonData a json-String from the OpeneMeteoWeatherForecastAPI
      * @return a json-String that can be used with the SWAC-DataShowModal plugin. It only contains weather-data for the last hour.
      */
-    public static String extractLatestWeatherData(String jsonData) {
+    public static String extractLatestWeatherData(String jsonData, String existingData) {
         JsonObject jsonObject = JsonParser.parseString(jsonData).getAsJsonObject();
+        JsonObject existingJsonObject = JsonParser.parseString(existingData).getAsJsonObject();
 
         double longitude = jsonObject.get("longitude").getAsDouble();
         double latitude = jsonObject.get("latitude").getAsDouble();
@@ -66,6 +67,10 @@ public class OpenMeteoJsonFormatter {
             newJsonObject.addProperty("soil_temperature_54cm", soilTemp54cm);
         } else {
             newJsonObject.addProperty("error", "Keine Daten vorhanden");
+        }
+        
+        if (existingJsonObject.has("name")) {
+            newJsonObject.addProperty("name", existingJsonObject.get("name").getAsString());
         }
 
         return newJsonObject.toString();

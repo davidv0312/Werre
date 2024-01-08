@@ -49,20 +49,9 @@ public class OpenMeteoJsonUpdateServlet extends HttpServlet {
         JsonObject jsonObj = jsonElement.getAsJsonObject();
 
         jsonString = jsonObj.get("currentData").toString();
-        
-        jsonString = OpenMeteoJsonFormatter.extractLatestWeatherData(jsonString);
 
-        String filename = jsonObj.get("filename").getAsString();        
-         
-        LOGGER.info("JSON-String vor dekoding " + jsonString);
-
-        jsonElement = JsonParser.parseString(jsonString);
-        Gson gson = new Gson();
-        String decodedJson = gson.toJson(jsonElement);
-        
         Properties prop = new Properties();
         String path;
-
         try (InputStream input = getClass().getClassLoader().getResourceAsStream("config.properties")) {
             if (input == null) {
                 LOGGER.severe("Konfigurationsdatei 'config.properties' konnte nicht gefunden werden");
@@ -74,10 +63,22 @@ public class OpenMeteoJsonUpdateServlet extends HttpServlet {
             LOGGER.severe("Fehler beim Laden der Konfigurationsdatei: " + ex.getMessage());
             return;
         }        
-
-        path = path + "web/data/openMeteoData/" + filename; 
+        String filename = jsonObj.get("filename").getAsString();
+        path = path + "web/data/openMeteoData/" + filename;
         LOGGER.info("Pfad zur JSON-Datei: " + path);
 
+        String existingData = "";
+        try {
+            existingData = new String(Files.readAllBytes(Paths.get(path)));
+        } catch (IOException e) {
+            LOGGER.warning("Fehler beim Lesen der bestehenden Datei: " + e.getMessage());
+        }
+
+        jsonString = OpenMeteoJsonFormatter.extractLatestWeatherData(jsonString, existingData);
+
+        JsonElement updatedJsonElement = JsonParser.parseString(jsonString);
+        Gson gson = new Gson();
+        String decodedJson = gson.toJson(updatedJsonElement);
         try {            
             Files.write(Paths.get(path), decodedJson.getBytes());
             LOGGER.info("JSON-String wurde in die Datei geschrieben: " + decodedJson);

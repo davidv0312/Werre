@@ -1,24 +1,71 @@
-#outputContainerLocation {
-    border: 1px solid #ccc; /* Dünne Linie für den Rahmen */
+#outputContainer {
+    border: 1px solid #ccc; 
     padding: 10px;
-    text-align: center; /* Zentriert die Überschrift */
-    max-width: 600px; /* Oder eine andere angemessene Breite */
-    margin-right: 0; /* Setzt den linken Rand auf 0 und verschiebt somit den Container nach links */
+    text-align: center; 
+    max-width: 600px; 
+    margin-left: 0; 
+}
+
+#outputContent {
+    display: flex;
+    justify-content: space-between; 
+    flex-wrap: wrap; 
+}
+
+#leftOutput, #rightOutput {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px; 
+}
+
+h3 {
+    width: 100%; 
+}
+
+#outputContainerLocation {
+    border: 1px solid #ccc; 
+    padding: 10px;
+    text-align: center; 
+    max-width: 600px; 
+    margin-right: 0; 
 }
 
 #outputContentLocation  {
     display: flex;
-    justify-content: space-between; /* Passt den Abstand zwischen den Containern an */
-    flex-wrap: wrap; /* Erlaubt das Umfließen der Elemente */
+    justify-content: space-between; 
+    flex-wrap: wrap; 
 }
 
 #leftOutputLocation , #rightOutputLocation  {
     flex: 1;
     padding: 10px;
-    margin-right: 10px; /* Fügt einen rechten Rand hinzu, um die Container näher zusammenzubringen */
+    margin-right: 10px; 
 }
 
 h3 {
-    width: 100%; /* Stellt sicher, dass die Überschrift die volle Breite einnimmt */
+    width: 100%; 
 }
+
+
+#mainContainer {
+    display: flex;
+    justify-content: space-between; 
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin: 0 -10px;
+}
+
+#outputContainer, #outputContainerLocation {
+    flex: 1; 
+    min-width: 40%; 
+    padding: 10px;
+    margin: 10px; 
+}
+
+#outputContainerLocation {
+    margin-right: 260px; 
+}
+
+
 

@@ -7,11 +7,10 @@
     <meta name="author" content="Alexander Kruse, Oskar Schaubert, Erik Schneider, David Vehlow">
     <link rel="stylesheet" type="text/css" href="SWAC/swac/libs/uikit/css/uikit.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
-        <link rel="stylesheet" type="text/css" href="css/legend.css">
+    <link rel="stylesheet" type="text/css" href="css/legend.css">
     <link rel="stylesheet" type="text/css" href="css/map.css">
     <link rel="stylesheet" type="text/css" href="css/chart.css">
     <link rel="stylesheet" type="text/css" href="css/outputContainer.css">
-    <link rel="stylesheet" type="text/css" href="css/outputContainerLocation.css">
     <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
     <script src="SWAC/swac/libs/uikit/js/uikit.min.js"></script>
     <script src="SWAC/swac/libs/uikit/js/uikit-icons.min.js"></script>
@@ -21,44 +20,52 @@
     <script src="js/addGeoData.js"></script>
     <script src="js/legend.js"></script>
     <script src="js/geodataButton.js"></script>
-    <script src="js/climateCharts.js"></script>
+    <script src="js/climateCharts.js"></script>    
     <script src="js/interpolation.js"></script>
     <script src="js/location.js"></script>
     <script src="js/temps.js"></script>
     <script src="js/heatmap.js"></script>
+    <script src="js/compClimateCharts.js" defer></script>
+    <script src="js/dropdown.js" defer></script>
 </head>
 <body>
     <main>
-        <h1>Klimamonitoring der Werre-Region</h1>            
-        <div id="outputContainer">
-            <h3>Werte des angeklickten Punkts</h3>
-            <div id="outputContent">
-                <div id="leftOutput">
-                    <div><label>Längengrad: </label><span id="longOutput">-</span></div>
-                    <div><label>Breitengrad: </label><span id="latOutput">-</span></div>
-                    <div><label>Temperatur: </label><span id="tempOutput">-</span> °C</div>
-                </div>
-                <div id="rightOutput">
-                    <div><label>Bodentemperatur (0cm): </label><span id="soilTemp0cmOutput">-</span> °C</div>
-                    <div><label>Bodentemperatur (6cm): </label><span id="soilTemp6cmOutput">-</span> °C</div>
-                    <div><label>Bodentemperatur (18cm): </label><span id="soilTemp18cmOutput">-</span> °C</div>
-                    <div><label>Bodentemperatur (54cm): </label><span id="soilTemp54cmOutput">-</span> °C</div>
+        <h1>Klimamonitoring der Werre-Region</h1>      
+        <select id="mpDropdown">
+        </select>
+        <button id="submitBtn">Klimawerte laden</button>
+        <br>
+        <div id="mainContainer">
+            <div id="outputContainer">
+                <h3>Werte des ausgewählten Punkts</h3>
+                <div id="outputContent">
+                    <div id="leftOutput">
+                        <div><label>Längengrad: </label><span id="longOutput">-</span></div>
+                        <div><label>Breitengrad: </label><span id="latOutput">-</span></div>
+                        <div><label>Temperatur: </label><span id="tempOutput">-</span> °C</div>
+                    </div>
+                    <div id="rightOutput">
+                        <div><label>Bodentemperatur (0cm): </label><span id="soilTemp0cmOutput">-</span> °C</div>
+                        <div><label>Bodentemperatur (6cm): </label><span id="soilTemp6cmOutput">-</span> °C</div>
+                        <div><label>Bodentemperatur (18cm): </label><span id="soilTemp18cmOutput">-</span> °C</div>
+                        <div><label>Bodentemperatur (54cm): </label><span id="soilTemp54cmOutput">-</span> °C</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="outputContainerLocation">
-            <h3>Werte des eigenen Standorts</h3>
-            <div id="outputContentLocation">
-                <div id="leftOutputLocation">
-                    <div><label>Längengrad: </label><span id="longOutputLocation">-</span></div>
-                    <div><label>Breitengrad: </label><span id="latOutputLocation">-</span></div>
-                    <div><label>Temperatur: </label><span id="tempOutputLocation">-</span> °C</div>
-                </div>
-                <div id="rightOutputLocation">
-                    <div><label>Bodentemperatur (0cm): </label><span id="soilTemp0cmOutputLocation">-</span> °C</div>
-                    <div><label>Bodentemperatur (6cm): </label><span id="soilTemp6cmOutputLocation">-</span> °C</div>
-                    <div><label>Bodentemperatur (18cm): </label><span id="soilTemp18cmOutputLocation">-</span> °C</div>
-                    <div><label>Bodentemperatur (54cm): </label><span id="soilTemp54cmOutputLocation">-</span> °C</div>
+            <div id="outputContainerLocation">
+                <h3>Werte des eigenen Standorts</h3>
+                <div id="outputContentLocation">
+                    <div id="leftOutputLocation">
+                        <div><label>Längengrad: </label><span id="longOutputLocation">-</span></div>
+                        <div><label>Breitengrad: </label><span id="latOutputLocation">-</span></div>
+                        <div><label>Temperatur: </label><span id="tempOutputLocation">-</span> °C</div>
+                    </div>
+                    <div id="rightOutputLocation">
+                        <div><label>Bodentemperatur (0cm): </label><span id="soilTemp0cmOutputLocation">-</span> °C</div>
+                        <div><label>Bodentemperatur (6cm): </label><span id="soilTemp6cmOutputLocation">-</span> °C</div>
+                        <div><label>Bodentemperatur (18cm): </label><span id="soilTemp18cmOutputLocation">-</span> °C</div>
+                        <div><label>Bodentemperatur (54cm): </label><span id="soilTemp54cmOutputLocation">-</span> °C</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -103,19 +110,60 @@
             <div id="measurePoints" swa="Worldmap2d"></div>            
         </div>        
         <br>
-        <div id="dateIntervalInput">
-            <input type="date" id="startDate" name="startDate" value="2023-11-05">
-            <input type="date" id="endDate" name="endDate" value="2023-11-19">
-            <select id="interval" name="interval">
-                <option value="hourly" selected>Stündlich</option>
-                <option value="daily">Täglich</option>
-            </select>
-            <select id="dataSelection">
-                <option value="temp">Temperatur</option>
-                <option value="rain">Regen</option>
+        <div>
+            <select id="chartSelector">
+                <option value="single">Liniendiagramm</option>
+                <option value="comp">Vergleich zwischen Messpunkten</option>
             </select>
         </div>
-        <div id="climateCharts" swa="Charts"></div>  
+        <br>
+        <div id="single">
+            <div id="chartHeadline">
+                <h2>Liniendiagramm</h2>
+            </div>        
+            <div id="dateIntervalInput">
+                <select id="chartDropdown">
+                </select>
+                <input type="date" id="startDate" name="startDate" value="2023-11-05">
+                <input type="date" id="endDate" name="endDate" value="2023-11-07">
+                <select id="interval" name="interval">
+                    <option value="hourly" selected>Stündlich</option>
+                    <option value="daily">Täglich</option>
+                </select>
+                <select id="dataSelection">
+                    <option value="temp">Temperatur</option>
+                    <option value="rain">Regen</option>
+                </select>
+                <button id="ChartSubmitBtn">Diagramm laden</button>
+                <br>
+            </div>
+            <div id="climateCharts" swa="Charts"></div>  
+        </div>
+        <br>
+        <div id="comp" style="display:none;">
+            <div id="compHeadline">
+                <h2>Vergleich zwischen Messpunkten</h2>
+            </div>
+            <div id="compDateIntervalInput">
+                <select id="compDropdown1">
+                </select>
+                <select id="compDropdown2">        
+                </select>
+                <input type="date" id="compStartDate" name="startDate" value="2023-11-05">
+                <input type="date" id="compEndDate" name="endDate" value="2023-11-07">
+                <select id="compInterval" name="interval">
+                    <option value="hourly" selected>Stündlich</option>
+                    <option value="daily">Täglich</option>
+                </select>
+                <select id="compDataSelection">
+                    <option value="temp">Temperatur</option>
+                    <option value="rain">Regen</option>
+                </select>
+                <button id="compBtn">Vergleichen</button>
+            </div>
+            <br>        
+            <div id="compClimateCharts" swa="Charts"></div>   
+        </div>
     </main>
 </body>
 </html>

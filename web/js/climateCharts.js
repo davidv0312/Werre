@@ -1,59 +1,82 @@
-let set = null;
+async function getChartMeasurePoint() {
+    var option = document.getElementById("chartDropdown").value;
+    try {
+        const response = await fetch('data/openMeteoData/' + option + '.json');
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Fehler beim Laden der Datei:', error);
+        return null; 
+    }
+}
 
-document.addEventListener('DOMContentLoaded', async function() { 
-    setTimeout(async function() { 
-        let chart = document.querySelector('#climateCharts');
-        
-        // Register event handler
-        document.addEventListener('swac_measurePoints_marker_click', function (e) {
-            let lat = e.detail.latlng.lat;
-            let lng = e.detail.latlng.lng;
-            
-            let startDate = document.getElementById('startDate').value;
-            let endDate = document.getElementById('endDate').value;
-            let interval = document.getElementById('interval').value;
-            
+document.addEventListener('DOMContentLoaded', async function() {
+    setTimeout(async function() {
+        let chart = document.querySelector('#climateCharts');   
+
+        async function processDataToChart(lat, lng, startDate, endDate, interval) {
+
             if(interval === 'hourly') {
                 fetchOpenMeteoTimeseriesHourly(lat, lng, startDate, endDate, interval).then((data) => {
                     let time = data[interval]['time'];
                     let temp = data[interval]['temperature_2m'];
-                    let rain = data[interval]['rain'];                
+                    let rain = data[interval]['rain'];
 
-                    // Remove former Dataset
-                    if(set !== null) {
-                        chart.swac_comp.removeAllData();
-                    }
-                
+                    chart.swac_comp.removeAllData();   // Gibt hier noch Probleme. x achse wird nicht vollständig entfernt.
+
                     for(let i=0;i<=time.length;i++){
-                        set = {time: time[i], temp: temp[i], rain:rain[i]};
-                        chart.swac_comp.addSet('Verlauf',set);
+                        let set = {time: time[i], temp: temp[i], rain:rain[i]};
+                        chart.swac_comp.addSet('Verlauf',set);                        
                         console.log(set);
                     }
                     console.log('Done!'); 
-                });                
-            } else {          
+                });
+            } else {
                 fetchOpenMeteoTimeseriesDaily(lat, lng, startDate, endDate, interval).then((data) => {
                     let time = data[interval]['time'];
                     let temp = data[interval]['temperature_2m_max'];
-                    let rain = data[interval]['rain_sum'];                
+                    let rain = data[interval]['rain_sum'];
 
-                    // Remove former Dataset
-                    if(set !== null) {
-                        chart.swac_comp.removeAllData();
-                    }
-                
+                    chart.swac_comp.removeAllData(); 
+
                     for(let i=0;i<=time.length;i++){
-                        set = {time: time[i], temp: temp[i], rain:rain[i]};
+                        let set = {time: time[i], temp: temp[i], rain:rain[i]};
                         chart.swac_comp.addSet('Verlauf',set);
                         console.log(set);
                     }
-                    console.log('Done!');     
+                    console.log('Done!');
                 });
             }
+        }
+
+        // Sollte wirklich ein Diagramm bei jedem klicken auf einen Messpunkt geladen werden???
+        // 
+        //document.addEventListener('swac_measurePoints_marker_click', function (e) {
+        //    let lat = e.detail.latlng.lat;
+        //    let lng = e.detail.latlng.lng;
+
+        //    let startDate = document.getElementById('startDate').value;
+        //    let endDate = document.getElementById('endDate').value;
+        //    let interval = document.getElementById('interval').value;
+
+        //    processDataToChart(lat, lng, startDate, endDate, interval);
+        //});
+
+        document.getElementById('ChartSubmitBtn').addEventListener('click', async function() {
+            let data = await getChartMeasurePoint();
+            let lat = data.latitude;
+            let lng = data.longitude;
+
+            let startDate = document.getElementById('startDate').value;
+            let endDate = document.getElementById('endDate').value;
+            let interval = document.getElementById('interval').value;
+
+            processDataToChart(lat, lng, startDate, endDate, interval);
         });
-        
+
     },1000);
 });
+
 
 climateCharts_options = {
     showWhenNoData: true,

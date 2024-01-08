@@ -1,12 +1,6 @@
 # Author: David Vehlow, david.vehlow@hsbi.de, Datum: 18.12.2023
-# ----ANLEITUNG----
-# Dieses Script ist auschließlich für das Produkt "INSPIRE-WFS NW Bodenbedeckungsvektor ALKIS" des Datenbereitstellers "Geobasis" NRW vorgesehen.
-# Außerdem muss das Produkt bevor dieses Script darauf angewendet werden kann, in eine Geojson-Datei umgewandelt werden (Am besten mit QGIS).
-# Legen Sie die Geojson im selben Verzeichnis wie dieses Script ab, und ändern sie den Dateinamen in Zeile 80 entsprechend.
-# Starten Sie das Script. 
-# Das Script wird die Polygone aus Ihrer Geojson-Datei extrahieren, und sie entsprechend ihres LandCoverClassValue sortieren,
-# und in neue Geojson-Dateien schreiben.
-# Bei 50 gleichzeitigen Downloads benötigt dieses Script für 10000 Polygone ca. 50 Minuten.
+# Für weitere Informationen bitte die Dokumentation lesen.
+
 
 
 import json

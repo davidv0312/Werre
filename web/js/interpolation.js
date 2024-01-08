@@ -162,6 +162,13 @@ document.addEventListener('DOMContentLoaded', function () {
         console.log('Koordinaten des Kartenklicks:', lat, lng);
         findPolygon(lng, lat);
     });
+    document.addEventListener('swac_measurePoints_marker_click', function (e) {
+        let lat = e.detail.latlng.lat; 
+        let lng = e.detail.latlng.lng; 
+
+        console.log('Koordinaten des Kartenklicks:', lat, lng);
+        findPolygon(lng, lat);
+    });
 });
 
 
