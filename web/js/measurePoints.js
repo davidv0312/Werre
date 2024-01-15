@@ -1,3 +1,9 @@
+
+/*
+ * The time where the measure points got last updated
+ */
+var lastDataUpdate = null;
+
 /*
  * Configuration-Object for the display of Measure-Points on the map
  */
@@ -24,9 +30,24 @@ window["DataShowModal_measurePoints_options"] = {
 };
 
 /*
+ * Updates the time where the measure points got last updated 
+ */
+function updateLastDataUpdate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1; 
+    const day = now.getDate();
+    const hour = now.getHours(); 
+
+    const formattedMonth = month < 10 ? '0' + month : month;
+    const formattedDay = day < 10 ? '0' + day : day;
+    lastDataUpdate = lastDataUpdate = formattedDay+ '-' + formattedMonth + '-' + year + ', ' + hour + ':00 Uhr';
+}
+
+/*
  * Adds measure points from data/openMeteoData with up-to-date-data to the map
  */
-document.addEventListener('DOMContentLoaded', async function() { 
+async function updateMeasurePointData() {
     setTimeout(async function() { 
         let map = document.querySelector('#measurePoints');   
         let n = 15; // Anzahl mp-Dateien -> TODO            
@@ -49,15 +70,57 @@ document.addEventListener('DOMContentLoaded', async function() {
             } catch (error) {
                 console.error('Fehler:', error);
             }            
-        }       
+        }   
+        updateLastDataUpdate();
     }, 1000); 
+}
+
+/*
+ * Calls updateLastDataUpdate() at every full hour. Needs to be called once to start.
+ */
+function updateMeasurePointsSchedule() {
+    const now = new Date();
+    const nextHour = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours() + 1, 0, 0, 0);
+    const delay = nextHour - now;
+
+    const countdownInterval = setInterval(updateCountdown, 1000);
+
+    function updateCountdown() {
+        const currentTime = new Date();
+        const timeLeft = nextHour - currentTime;
+
+        if (timeLeft >= 0) {
+            const minutes = Math.floor(timeLeft / 60000);
+            const seconds = Math.floor((timeLeft % 60000) / 1000);
+            document.getElementById("countdownTimer").innerText = 'Nächstes Update in: ' + minutes + ':' + seconds;
+        } else {
+            clearInterval(countdownInterval);
+        }
+    }
+
+    setTimeout(() => {
+        updateMeasurePointData();
+        setInterval(updateMeasurePointData, 3600000);
+        clearInterval(countdownInterval); 
+        updateMeasurePointsSchedule(); 
+    }, delay);
+
+    updateCountdown(); 
+}
+
+/*
+ * Calls updateMeasurePointData() and updateMeasurePointsSchedule() at the startup of the application.
+ */
+document.addEventListener('DOMContentLoaded', async function() { 
+    updateMeasurePointData();
+    updateMeasurePointsSchedule();
 });
 
 /*
  * Sends json-data and the filename to write to to the sever endpoint /updateJson in the class OpenMeteoJsonUpdateServlet
  * 
- * @ {Object} - currentData the json data to send
- * @ {string} - the filename of the file to write to
+ * @ {Object} currentData - The json data to send
+ * @ {string} filename - The filename of the file to write to
  */
 function sendJsonData(currentData, filename) {
     const dataToSend = {

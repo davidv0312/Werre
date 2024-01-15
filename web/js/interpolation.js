@@ -1,4 +1,20 @@
-// Interpolation mittels baryzentrischer interpolation
+
+/**
+ * Interpolates weather data using barycentric coordinates within a triangle formed by three points.
+ * 
+ * @param {number} x1 - X-coordinate of the first point.
+ * @param {number} y1 - Y-coordinate of the first point.
+ * @param {number} x2 - X-coordinate of the second point.
+ * @param {number} y2 - Y-coordinate of the second point.
+ * @param {number} x3 - X-coordinate of the third point.
+ * @param {number} y3 - Y-coordinate of the third point.
+ * @param {number} weather1 - Weather data at the first point.
+ * @param {number} weather2 - Weather data at the second point.
+ * @param {number} weather3 - Weather data at the third point.
+ * @param {number} xt - Target X-coordinate for interpolation.
+ * @param {number} yt - Target Y-coordinate for interpolation.
+ * @returns {number} Interpolated weather value at the target coordinates.
+ */
 function interpolateWeather(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3, xt, yt) {  
     
     
@@ -27,7 +43,11 @@ function interpolateWeather(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3
     return interpolatedValue;
 }
 
-
+/**
+ * Loads polygon from data/polygons/ .
+ * 
+ * @returns {Object[]} An array of polygon data objects.
+ */
 async function loadPolygons() {
     let polygons = [];
     const path = 'data/polygons/polygon';
@@ -49,7 +69,14 @@ async function loadPolygons() {
 }
 
 
-
+/**
+ * Determines if a point lies within the first polygon in a given feature collection.
+ * 
+ * @param {Object} featureCollection - A collection of features (polygons).
+ * @param {number} x - X-coordinate of the point.
+ * @param {number} y - Y-coordinate of the point.
+ * @returns {boolean} True if the point is inside the polygon, false otherwise.
+ */
 function findPolygonWithCoordinates(featureCollection, x, y) {
 
     if (featureCollection.features.length > 0) {
@@ -65,6 +92,12 @@ function findPolygonWithCoordinates(featureCollection, x, y) {
     }
 }
 
+/**
+ * Loads measure point data from a given filename.
+ * 
+ * @param {string} filename - The filename to load data from.
+ * @returns {Object|null} Measure point data object, or null in case of an error.
+ */
 async function loadMeasurePoint(filename) {
     try {
         const response = await fetch(`data/openMeteoData/${filename}`);
@@ -78,9 +111,15 @@ async function loadMeasurePoint(filename) {
     }
 }
 
-
+/**
+ * Searches for and returns weather data for a measure point that matches given coordinates.
+ * 
+ * @param {number} x1 - X-coordinate to match.
+ * @param {number} y1 - Y-coordinate to match.
+ * @returns {Object|null} Weather data for the matching measure point, or null if not found.
+ */
 async function findMatchingMeasurePointWeatherData(x1, y1) {
-    for (let i = 1; i <= 15; i++) {
+    for (let i = 1; i <= 15; i++) { // TODO nicht hardcoden
         const data = await loadMeasurePoint(`mp${i}.json`);
         if (data && data.longitude === x1 && data.latitude === y1) {
             return data;
@@ -90,8 +129,25 @@ async function findMatchingMeasurePointWeatherData(x1, y1) {
     return null; 
 }
 
+/**
+ * Displays interpolated weather data and coordinates in the HTML document. 
+ * This includes interpolating and displaying the weather data.
+ * 
+ * @param {number} x1 - X-coordinate of the first measure point.
+ * @param {number} y1 - Y-coordinate of the first measure point.
+ * @param {number} x2 - X-coordinate of the second measure point.
+ * @param {number} y2 - Y-coordinate of the second measure point.
+ * @param {number} x3 - X-coordinate of the third measure point.
+ * @param {number} y3 - Y-coordinate of the third measure point.
+ * @param {Object} weather1 - Weather data of the first measure point.
+ * @param {Object} weather2 - Weather data of the second measure point.
+ * @param {Object} weather3 - Weather data of the third measure point.
+ * @param {number} x - X-coordinate for interpolation.
+ * @param {number} y - Y-coordinate for interpolation.
+ */
 function enterValues(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3, x, y) {
        
+    document.getElementById('timeOutput').innerHTML = lastDataUpdate;   
     document.getElementById('longOutput').innerHTML = x.toFixed(4);
     document.getElementById('latOutput').innerHTML = y.toFixed(4);
     let interpolatedValue = interpolateWeather(x1, y1, x2, y2, x3, y3, weather1.temp, weather2.temp, weather3.temp, x, y); 
@@ -106,6 +162,9 @@ function enterValues(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3, x, y)
     document.getElementById('soilTemp54cmOutput').innerHTML = interpolatedValue.toFixed(1);
 }
 
+/**
+ * Fills the HTML elements with placeholder values when no data is found.
+ */
 function enterNoValuesFound() {    
     document.getElementById('longOutput').innerHTML = '-';
     document.getElementById('latOutput').innerHTML = '-';
@@ -116,6 +175,12 @@ function enterNoValuesFound() {
     document.getElementById('soilTemp54cmOutput').innerHTML = '-';
 }
 
+/**
+ * Identifies a polygon that contains a given point, and displays weather data based on the polygon's vertices.
+ * 
+ * @param {number} x - X-coordinate of the point to find the polygon for.
+ * @param {number} y - Y-coordinate of the point to find the polygon for.
+ */
 async function findPolygon(x, y) {
     const polygons = await loadPolygons();
     let found = false;
@@ -152,8 +217,9 @@ async function findPolygon(x, y) {
     }
 }
 
-
-
+/**
+ * Registers event listeners for map clicks, handling coordinates retrieval and polygon finding for weather data display.
+ */
 document.addEventListener('DOMContentLoaded', function () {
     document.addEventListener('swac_measurePoints_map_click', function (e) {
         let lat = e.detail.latlng.lat; 

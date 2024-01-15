@@ -1,3 +1,7 @@
+
+/**
+ * Colors for the interpolation-coloring of the polygons related to their temperature.
+ */
 const tempToColor = {
   '-10': 0x00008B, // Dunkelblau
   '-9': 0x000095,

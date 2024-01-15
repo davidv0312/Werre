@@ -1,4 +1,10 @@
 
+/**
+ * Adds new options to the dropdown menus related to measure points. 
+ *
+ * @param {string} text - The display text for the dropdown option.
+ * @param {string} value - The value to be associated with the dropdown option.
+ */
 function addToMPDropdown(text, value) {
     var select = document.getElementById("mpDropdown");
     var option = document.createElement("option");
@@ -25,6 +31,10 @@ function addToMPDropdown(text, value) {
     select2.appendChild(option2);
 }
 
+
+/**
+ * Loads measure point data from JSON files and adds them as options to dropdown menus.
+ */
 function addMeasurePointsToDropdown() {
     let n = 15; // TODO -> nicht hardcoden
     let name = '';
@@ -40,17 +50,19 @@ function addMeasurePointsToDropdown() {
     }
 }
 
+/**
+ * Call addMeasurePointsToDropdown() upon starting the application.
+ */
 document.addEventListener('DOMContentLoaded', async function() { 
     addMeasurePointsToDropdown();
 });
 
-
+/**
+ * Fetches data for the selected measure point from the related json file and displays various details in the HTML document.
+ */
 document.getElementById("submitBtn").onclick = function() {
-    var option = document.getElementById("mpDropdown").value;
-    
-    // Weitere Aktionen, option ist jetzt der Name des ausgewählten Messpunkts als String. Was soll damit gemacht werden???
-    
-    // Einfach Werte eintragen
+    var option = document.getElementById("mpDropdown").value;    
+
     fetch('data/openMeteoData/' + option + '.json')
         .then(response => response.json())
         .then(data => {

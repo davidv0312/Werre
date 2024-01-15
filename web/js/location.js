@@ -1,3 +1,7 @@
+
+/*
+ * Configuration-Object for the user-location-icon.
+ */
 measurePoints_options = {
     ...measurePoints_options,
     userIcon: {
@@ -10,9 +14,24 @@ measurePoints_options = {
     }
 };
 
-    
+/**
+ * Displays interpolated weather data at the user's location in the HTML document.
+ * 
+ * @param {number} x1 - X-coordinate of the first measure point.
+ * @param {number} y1 - Y-coordinate of the first measure point.
+ * @param {number} x2 - X-coordinate of the second measure point.
+ * @param {number} y2 - Y-coordinate of the second measure point.
+ * @param {number} x3 - X-coordinate of the third measure point.
+ * @param {number} y3 - Y-coordinate of the third measure point.
+ * @param {Object} weather1 - Weather data of the first measure point.
+ * @param {Object} weather2 - Weather data of the second measure point.
+ * @param {Object} weather3 - Weather data of the third measure point.
+ * @param {number} x - User's current X-coordinate.
+ * @param {number} y - User's current Y-coordinate.
+ */    
 function enterValuesLocation(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3, x, y) {
-       
+    
+    document.getElementById('timeOutputLocation').innerHTML = lastDataUpdate;      
     document.getElementById('longOutputLocation').innerHTML = x.toFixed(4);
     document.getElementById('latOutputLocation').innerHTML = y.toFixed(4);
     let interpolatedValue = interpolateWeather(x1, y1, x2, y2, x3, y3, weather1.temp, weather2.temp, weather3.temp, x, y); 
@@ -27,6 +46,9 @@ function enterValuesLocation(x1, y1, x2, y2, x3, y3, weather1, weather2, weather
     document.getElementById('soilTemp54cmOutputLocation').innerHTML = interpolatedValue.toFixed(1);
 }
 
+/**
+ * Fills the HTML elements with placeholder values when no data is found at the user's location.
+ */
 function enterNoValuesFoundLocation() {    
     document.getElementById('longOutputLocation').innerHTML = '-';
     document.getElementById('latOutputLocation').innerHTML = '-';
@@ -37,6 +59,12 @@ function enterNoValuesFoundLocation() {
     document.getElementById('soilTemp54cmOutputLocation').innerHTML = '-';
 }
 
+/**
+ * Identifies a polygon containing the user's current coordinates and displays weather data based on the polygon's vertices.
+ * 
+ * @param {number} x - User's current X-coordinate.
+ * @param {number} y - User's current Y-coordinate.
+ */
 async function findPolygonLocation(x, y) {
     const polygons = await loadPolygons();
     let found = false;
@@ -73,6 +101,11 @@ async function findPolygonLocation(x, y) {
     }
 }
 
+/**
+ * Checks if geolocation is supported in the browser and retrieves the user's current position.
+ * On success, it finds the relevant polygon and displays weather data at the user's location.
+ * On failure, logs an error message or indicates geolocation is not supported.
+ */
 if ("geolocation" in navigator) {
 
   navigator.geolocation.getCurrentPosition(function(position) {

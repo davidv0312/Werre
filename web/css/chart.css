@@ -1,7 +1,17 @@
-#climateCharts {
+#climateChartsTemp {
     width: 80%; 
     height: 300px; 
     margin: 0 auto;
+}
+
+#climateChartsRain {
+    width: 80%; 
+    height: 300px; 
+    margin: 0 auto;
+}
+
+h3 {
+    text-align: center;
 }
 
 #dateIntervalInput {
@@ -9,7 +19,13 @@
     margin: 0 auto;
 }
 
-#compClimateCharts {
+#compClimateChartsTemp {
+    width: 80%; 
+    height: 300px; 
+    margin: 0 auto;
+}
+
+#compClimateChartsRain {
     width: 80%; 
     height: 300px; 
     margin: 0 auto;

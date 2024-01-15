@@ -42,7 +42,7 @@ async function processCoordinatesToOpenMeteoRequest(latitude, longitude) {
 }
 
 /*
- * Sends a request to the OpenMeteoWeatherHistoricalAPI with given coordinates and dates and recieves weather-data
+ * Sends a request to the OpenMeteoWeatherHistoricalAPI with given coordinates and dates and recieves weather-data for an hourly interval.
  * 
  * @param {number} latitude - Latitude for the weather-data-location
  * @param {number} longitude - Longitude for the weather-data-location
@@ -70,7 +70,16 @@ async function fetchOpenMeteoTimeseriesHourly(latitude, longitude, startDate, en
     }
 }
 
-
+/*
+ * Sends a request to the OpenMeteoWeatherHistoricalAPI with given coordinates and dates and recieves weather-data for a daily interval.
+ * 
+ * @param {number} latitude - Latitude for the weather-data-location
+ * @param {number} longitude - Longitude for the weather-data-location
+ * @param {string} startDate - StartDate of the timeseries
+ * @param {string} endDate - EndDate of the timeseries
+ * @param {string} interval - Interval of the data (can be hourly,monthly etc.) 
+ * @returns {Promise<Object>} - A promise that returns an object with OpenMeteoWeatherForecast-data from a successful request.
+ */
 async function fetchOpenMeteoTimeseriesDaily(latitude, longitude, startDate, endDate, interval){
     
     let url = `https://archive-api.open-meteo.com/v1/archive?latitude=${latitude}&longitude=${longitude}&start_date=${startDate}&end_date=${endDate}&${interval}=temperature_2m_max,rain_sum`;

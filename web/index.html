@@ -40,6 +40,7 @@
                 <h3>Werte des ausgewählten Punkts</h3>
                 <div id="outputContent">
                     <div id="leftOutput">
+                        <div><label>Zeit: </label><span id="timeOutput">-</span></div>
                         <div><label>Längengrad: </label><span id="longOutput">-</span></div>
                         <div><label>Breitengrad: </label><span id="latOutput">-</span></div>
                         <div><label>Temperatur: </label><span id="tempOutput">-</span> °C</div>
@@ -56,6 +57,7 @@
                 <h3>Werte des eigenen Standorts</h3>
                 <div id="outputContentLocation">
                     <div id="leftOutputLocation">
+                        <div><label>Zeit: </label><span id="timeOutputLocation">-</span></div>
                         <div><label>Längengrad: </label><span id="longOutputLocation">-</span></div>
                         <div><label>Breitengrad: </label><span id="latOutputLocation">-</span></div>
                         <div><label>Temperatur: </label><span id="tempOutputLocation">-</span> °C</div>
@@ -77,26 +79,26 @@
         <div id="legendBox">
             <img id="legend" src="" alt="Legende">
             <div id="checkboxes">
-                <div><input type="checkbox" id="0" checked><label>Nicht eindeutig bestimmbar</label></div>
-                <div><input type="checkbox" id="1" checked><label>Bebauung</label></div>
-                <div><input type="checkbox" id="1-1" checked><label>Bebauung - Hochbau und Bauliche Nebenflächen</label></div>
-                <div><input type="checkbox" id="1-2" checked><label>Bebauung - Tiefbau</label></div>
-                <div><input type="checkbox" id="2" checked><label>Vegetationslos</label></div>
-                <div><input type="checkbox" id="2-2" checked><label>Vegetationslos - Lockermaterial</label></div>
-                <div><input type="checkbox" id="2-2--1" checked><label>Vegetationslos - Lockermaterial - Oberflächenmaterial Geröll, Schotter, Kies</label></div>
-                <div><input type="checkbox" id="2-2--3" checked><label>Vegetationslos - Lockermaterial - Oberflächenmaterial Erdreich</label></div>
-                <div><input type="checkbox" id="3" checked><label>Vegetation</label></div>
-                <div><input type="checkbox" id="3-1" checked><label></label>Vegetation - Krautige Vegetation</div>
-                <div><input type="checkbox" id="3-1--1" checked><label></label>Vegetation - KrautigeVegetation - Vegetationsmerkmal Gras</div>
-                <div><input type="checkbox" id="3-1--3" checked><label></label>Vegetation - KrautigeVegetation - Vegetationsmerkmal Getreide, Staudengewächse, Farne</div>
-                <div><input type="checkbox" id="3-2--1" checked><label></label>Vegetation - Holzige Vegetation - Vegetationsmerkmal Bäume</div>
-                <div><input type="checkbox" id="3-2--2" checked><label></label>Vegetation - Holzige Vegetation - Vegetationsmerkmal Gehölz</div>
-                <div><input type="checkbox" id="4-2" checked><label></label>Wasser - Binnengewässer</div>
-                <div><input type="checkbox" id="4-2--1---1" checked><label></label>Wasser - Binnengewässer - Fließeigenschaft Fließend - Gewässerart Fluss</div>
-                <div><input type="checkbox" id="4-2--1---2" checked><label></label>Wasser - Binnengewässer - Fließeigenschaft Fließend - Gewässerart Bach</div>
-                <div><input type="checkbox" id="4-2--2---7" checked><label>Wasser - Binnengewässer - Fließeigenschaft Stehend - Gewässerart See, Teich</label></div>
+                <div><input type="checkbox" id="0" ><label>Nicht eindeutig bestimmbar</label></div>
+                <div><input type="checkbox" id="1" ><label>Bebauung</label></div>
+                <div><input type="checkbox" id="1-1" ><label>Bebauung - Hochbau und Bauliche Nebenflächen</label></div>
+                <div><input type="checkbox" id="1-2" ><label>Bebauung - Tiefbau</label></div>
+                <div><input type="checkbox" id="2" ><label>Vegetationslos</label></div>
+                <div><input type="checkbox" id="2-2" ><label>Vegetationslos - Lockermaterial</label></div>
+                <div><input type="checkbox" id="2-2--1" ><label>Vegetationslos - Lockermaterial - Oberflächenmaterial Geröll, Schotter, Kies</label></div>
+                <div><input type="checkbox" id="2-2--3" ><label>Vegetationslos - Lockermaterial - Oberflächenmaterial Erdreich</label></div>
+                <div><input type="checkbox" id="3" ><label>Vegetation</label></div>
+                <div><input type="checkbox" id="3-1" ><label></label>Vegetation - Krautige Vegetation</div>
+                <div><input type="checkbox" id="3-1--1" ><label></label>Vegetation - KrautigeVegetation - Vegetationsmerkmal Gras</div>
+                <div><input type="checkbox" id="3-1--3" ><label></label>Vegetation - KrautigeVegetation - Vegetationsmerkmal Getreide, Staudengewächse, Farne</div>
+                <div><input type="checkbox" id="3-2--1" ><label></label>Vegetation - Holzige Vegetation - Vegetationsmerkmal Bäume</div>
+                <div><input type="checkbox" id="3-2--2" ><label></label>Vegetation - Holzige Vegetation - Vegetationsmerkmal Gehölz</div>
+                <div><input type="checkbox" id="4-2" ><label></label>Wasser - Binnengewässer</div>
+                <div><input type="checkbox" id="4-2--1---1" ><label></label>Wasser - Binnengewässer - Fließeigenschaft Fließend - Gewässerart Fluss</div>
+                <div><input type="checkbox" id="4-2--1---2" ><label></label>Wasser - Binnengewässer - Fließeigenschaft Fließend - Gewässerart Bach</div>
+                <div><input type="checkbox" id="4-2--2---7" ><label>Wasser - Binnengewässer - Fließeigenschaft Stehend - Gewässerart See, Teich</label></div>
                 <hr>
-                <div><input type="checkbox" id="all" checked><label>Alle ein/ausblenden</label></div>
+                <div><input type="checkbox" id="all" ><label>Alle ein/ausblenden</label></div>
             </div>
         </div>
         <br>
@@ -137,7 +139,11 @@
                 <button id="ChartSubmitBtn">Diagramm laden</button>
                 <br>
             </div>
-            <div id="climateCharts" swa="Charts"></div>  
+            <h3>Temperatur in °C</h3>  
+            <div id="climateChartsTemp" swa="Charts"></div>
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <h3>Niederschlagsmenge innerhalb der letzten Stunde in mm</h3>  
+            <div id="climateChartsRain" swa="Charts"></div>  
         </div>
         <br>
         <div id="comp" style="display:none;">
@@ -155,15 +161,16 @@
                     <option value="hourly" selected>Stündlich</option>
                     <option value="daily">Täglich</option>
                 </select>
-                <select id="compDataSelection">
-                    <option value="temp">Temperatur</option>
-                    <option value="rain">Regen</option>
-                </select>
                 <button id="compBtn">Vergleichen</button>
             </div>
-            <br>        
-            <div id="compClimateCharts" swa="Charts"></div>   
+            <br>  
+            <h3>Temperatur in °C</h3>  
+            <div id="compClimateChartsTemp" swa="Charts"></div>   
+            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <h3>Niederschlagsmenge innerhalb der letzten Stunde in mm</h3>  
+            <div id="compClimateChartsRain" swa="Charts"></div>   
         </div>
+    <div id="countdownTimer" style="position: fixed; left: 0; bottom: 0; font-size: small; z-index: 1000;"></div>
     </main>
 </body>
 </html>

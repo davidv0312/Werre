@@ -73,7 +73,7 @@ async function addHeatmap() {
 
 function removeHeatmap() {
     for (let i = 0 ; i < polygonNumber ; i++) {
-        document.querySelector('#measurePoints').swac_comp.removeModelFile('/Werre/data/polygons/polygon'+ i.toString()+ '.geojson');
+        document.querySelector('#measurePoints').swac_comp.removeModelFile('polygon_' + i.toString());
     }
 }
 

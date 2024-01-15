@@ -1,34 +1,19 @@
+
+/**
+ * Adds the legend for the landcoverunits to the html page.
+ */
 setTimeout(function() {
     var legend = document.getElementById('legend');
     legend.src = 'images/legende_bodenbedeckung.png';
 }, 2000); 
 
-let loaded = false;
-
+/**
+ * Logic for displaying and undisplaying the legend for the landcoverunits.
+ */
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("toggleLegend").addEventListener("change", function() {
         var packageElement = document.getElementById("legendBox");
-        if (loaded === false) {
-            handleCheckbox0();
-            handleCheckbox1();
-            handleCheckbox11();
-            handleCheckbox12();
-            handleCheckbox2();
-            handleCheckbox22();
-            handleCheckbox221();
-            handleCheckbox223();
-            handleCheckbox3();
-            handleCheckbox31();
-            handleCheckbox311();
-            handleCheckbox313();
-            handleCheckbox321();
-            handleCheckbox322();
-            handleCheckbox42();
-            handleCheckbox4211();
-            handleCheckbox4212();
-            handleCheckbox4227();
-            loaded = true;
-        }
+
         if (this.checked) {
             packageElement.style.display = "flex";
         } else {
@@ -37,18 +22,31 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+
+/**
+ * Logic for the checkboxes for flexible displaying and undisplaying a single type of landcoverunits.
+ */
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("all").addEventListener("change", function() {
         var allChecked = this.checked;
         var checkboxes = document.getElementById("checkboxes").querySelectorAll("input[type=checkbox]");
-        
+    
+        var allAlreadyChecked = true;
+        for (var checkbox of checkboxes) {
+            if (checkbox.id !== "all" && !checkbox.checked) {
+                allAlreadyChecked = false;
+                break;
+            }
+        }
+
         checkboxes.forEach(function(checkbox) {
             if (checkbox.id !== "all") {
-                checkbox.checked = allChecked;
-                checkbox.dispatchEvent(new Event('change')); // Manuell das 'change' Event auslösen
+                checkbox.checked = allAlreadyChecked ? false : allChecked;
+                checkbox.dispatchEvent(new Event('change'));
             }
         });
     });
+
     document.getElementById("0").addEventListener("change", handleCheckbox0);
     document.getElementById("1").addEventListener("change", handleCheckbox1);
     document.getElementById("1-1").addEventListener("change", handleCheckbox11);
@@ -69,6 +67,10 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("4-2--2---7").addEventListener("change", handleCheckbox4227);
 });
 
+/**
+ * Calls the related function of a checkbox id..
+ * @param {string} checkboxId - The id of the checkbox to call.
+ */
 function triggerCheckboxFunction(checkboxId) {
     switch (checkboxId) {
         case "0":
