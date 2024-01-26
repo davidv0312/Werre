@@ -14,7 +14,7 @@ document.getElementById('chartSelector').addEventListener('change', function() {
 compClimateChartsTemp_options = {
     showWhenNoData: true,
     xAxisAtrrName: 'time',
-    yAxisAttrNames: ['Temperatur 1','Temperatur 2'],
+    yAxisAttrNames: ['Temperatur'],
     plugins: new Map()
 };
      
@@ -32,7 +32,7 @@ compClimateChartsTemp_options.plugins.set('Linechart', {
 compClimateChartsRain_options = {
     showWhenNoData: true,
     xAxisAtrrName: 'time',
-    yAxisAttrNames: ['Regenmenge 1','Regenmenge 2'],
+    yAxisAttrNames: ['Regenmenge'],
     plugins: new Map()
 };
 
@@ -45,42 +45,36 @@ compClimateChartsRain_options.plugins.set('Linechart', {
 });
 
 /**
- * Adds temperature data from two different locations to a temperature comparison chart. 
- * It fetches the temperature data based on coordinates and date range for 
- * both locations and processes this data to be displayed in the comparison chart.
+ * Adds temperature data from a location to a temperature comparison chart. 
+ * It fetches the temperature data based on coordinates and date range
+ * and processes this data to be displayed in the comparison chart.
  * 
- * @param {Object} data1 - The data object for the first location.
- * @param {Object} data2 - The data object for the second location.
+ * @param {Object} data - The data object for the location.
  * @param {string} name - The name to be used as a label for the dataset in the chart.
  */
-function addToCompChartTemp(data1, data2, name) {
+function addToCompChartTemp(data, name) {
     let chart = document.querySelector('#compClimateChartsTemp');
     
     var startDate = document.getElementById('compStartDate').value;
     var endDate = document.getElementById('compEndDate').value;
     var interval = document.getElementById('compInterval').value;
     
-    var lng1 = data1.longitude;
-    var lat1 = data1.latitude;
-    var lng2 = data2.longitude;
-    var lat2 = data2.latitude;   
+    var lng1 = data.longitude;
+    var lat1 = data.latitude;
+ 
 
     /**
      * Adds datasets for two temperature series to the comparison chart.
      *
      * @param {Array} time - An array of time points, representing the time axis for the chart.
-     * @param {Array} temp1 - An array of temperature values from the first location, 
-     *                        corresponding to each time point.
-     * @param {Array} temp2 - An array of temperature values from the second location, 
-     *                        corresponding to each time point.
+     * @param {Array} temp - An array of temperature values for the location. 
+     *                       
      */
-    function processDataset(time, temp1, temp2) {        
-        chart.swac_comp.removeAllData();       
+    function processDataset(time, temp) {              
         for(let i = 0; i < time.length; i++){
             let set = {
                 time: time[i],
-                'Temperatur 1': temp1[i],
-                'Temperatur 2': temp2[i]
+                'Temperatur': temp[i]
             };
             chart.swac_comp.addSet(name, set); 
         }
@@ -90,60 +84,52 @@ function addToCompChartTemp(data1, data2, name) {
  
     if(interval === 'hourly') {
         Promise.all([
-            fetchOpenMeteoTimeseriesHourly(lat1, lng1, startDate, endDate, interval).then(data => data[interval]),
-            fetchOpenMeteoTimeseriesHourly(lat2, lng2, startDate, endDate, interval).then(data => data[interval])
+            fetchOpenMeteoTimeseriesHourly(lat1, lng1, startDate, endDate, interval).then(data => data[interval])
         ])
-        .then(([dat1, dat2]) => {
-            processDataset(dat1['time'], dat1['temperature_2m'], dat2['temperature_2m']);
+        .then(([dat1]) => {
+            processDataset(dat1['time'], dat1['temperature_2m']);
         });
     } else {          
         Promise.all([
-            fetchOpenMeteoTimeseriesDaily(lat1, lng1, startDate, endDate, interval).then(data => data[interval]),
-            fetchOpenMeteoTimeseriesDaily(lat2, lng2, startDate, endDate, interval).then(data => data[interval])
+            fetchOpenMeteoTimeseriesDaily(lat1, lng1, startDate, endDate, interval).then(data => data[interval])
         ])
-        .then(([dat1, dat2]) => {
-            processDataset(dat1['time'], dat1['temperature_2m_max'], dat2['temperature_2m_max']);
+        .then(([dat1]) => {
+            processDataset(dat1['time'], dat1['temperature_2m_max']);
         });
     }
 }
 
 /**
- * Adds rain data from two different locations to a rain comparison chart. 
- * It fetches the rain data based on coordinates and date range for 
- * both locations and processes this data to be displayed in the comparison chart.
+ * Adds rain data from a location to a rain comparison chart. 
+ * It fetches the temperature data based on coordinates and date range
+ * and processes this data to be displayed in the comparison chart.
  * 
- * @param {Object} data1 - The data object for the first location.
- * @param {Object} data2 - The data object for the second location.
+ * @param {Object} data - The data object for the location.
  * @param {string} name - The name to be used as a label for the dataset in the chart.
  */
-function addToCompChartRain(data1, data2, name) {
+function addToCompChartRain(data, name) {
     let chart = document.querySelector('#compClimateChartsRain');
     
     var startDate = document.getElementById('compStartDate').value;
     var endDate = document.getElementById('compEndDate').value;
     var interval = document.getElementById('compInterval').value;
     
-    var lng1 = data1.longitude;
-    var lat1 = data1.latitude;
-    var lng2 = data2.longitude;
-    var lat2 = data2.latitude;   
+    var lng1 = data.longitude;
+    var lat1 = data.latitude;
+
 
     /**
      * Adds datasets for two rain series to the comparison chart.
      *
      * @param {Array} time - An array of time points, representing the time axis for the chart.
-     * @param {Array} rain1 - An array of rain values from the first location, 
-     *                        corresponding to each time point.
-     * @param {Array} rain2 - An array of rain values from the second location, 
-     *                        corresponding to each time point.
+     * @param {Array} rain - An array of rain values for the location. 
      */
-    function processDataset(time, rain1, rain2,) {        
-        chart.swac_comp.removeAllData();       
+    function processDataset(time, rain) {        
+;       
         for(let i = 0; i < time.length; i++){
             let set = {
                 time: time[i],
-                'Regenmenge 1': rain1[i],
-                'Regenmenge 2': rain2[i]
+                'Regenmenge': rain[i]
             };
             chart.swac_comp.addSet(name, set); 
         }
@@ -153,19 +139,17 @@ function addToCompChartRain(data1, data2, name) {
  
     if(interval === 'hourly') {
         Promise.all([
-            fetchOpenMeteoTimeseriesHourly(lat1, lng1, startDate, endDate, interval).then(data => data[interval]),
-            fetchOpenMeteoTimeseriesHourly(lat2, lng2, startDate, endDate, interval).then(data => data[interval])
+            fetchOpenMeteoTimeseriesHourly(lat1, lng1, startDate, endDate, interval).then(data => data[interval])
         ])
-        .then(([dat1, dat2]) => {
-            processDataset(dat1['time'], dat1['rain'], dat2['rain']);
+        .then(([dat1]) => {
+            processDataset(dat1['time'], dat1['rain']);
         });
     } else {          
         Promise.all([
-            fetchOpenMeteoTimeseriesDaily(lat1, lng1, startDate, endDate, interval).then(data => data[interval]),
-            fetchOpenMeteoTimeseriesDaily(lat2, lng2, startDate, endDate, interval).then(data => data[interval])
+            fetchOpenMeteoTimeseriesDaily(lat1, lng1, startDate, endDate, interval).then(data => data[interval])
         ])
-        .then(([dat1, dat2]) => {
-            processDataset(dat1['time'], dat1['rain_sum'], dat2['rain_sum']);
+        .then(([dat1]) => {
+            processDataset(dat1['time'], dat1['rain_sum']);
         });
     }
 }
@@ -181,12 +165,19 @@ document.getElementById("compBtn").onclick = function() {
         fetch('data/openMeteoData/' + option1 + '.json').then(response => response.json()),
         fetch('data/openMeteoData/' + option2 + '.json').then(response => response.json())
     ])
-    .then(([data1, data2]) => {        
-        addToCompChartTemp(data1, data2, "Messpunkt");   
-        addToCompChartRain(data1, data2, "Messpunkt");  
+    .then(([data1, data2]) => {   
+        document.querySelector('#compClimateChartsTemp').swac_comp.removeAllData();
+        document.querySelector('#compClimateChartsRain').swac_comp.removeAllData();
+        addToCompChartTemp(data1, "Messpunkt 1");
+        addToCompChartRain(data1, "Messpunkt 1"); 
+        if (option1 !== option2) {
+            addToCompChartTemp(data2, "Messpunkt 2");  
+            addToCompChartRain(data2, "Messpunkt 2"); 
+        }
     })
     .catch(error => console.error('Fehler beim Laden der Dateien:', error));
 };
+
 
 
 

@@ -1,24 +1,33 @@
-let polygonNumber = 21;
-
+/**
+ * Maps a temperature value to its closest predefined color.
+ * 
+ * @param {number} temperature - The temperature to map.
+ * @returns {string} A string representing the color in hexadecimal.
+ */
 function getColorForTemperature(temperature) {
-  let closestTemp = null;
-  let minDiff = Infinity;
+    let closestTemp = null;
+    let minDiff = Infinity;
 
-  for (const tempKey in tempToColor) {
-    const temp = parseInt(tempKey);
-    const diff = Math.abs(temperature - temp);
+    for (const tempKey in tempToColor) {
+        const temp = parseInt(tempKey);
+        const diff = Math.abs(temperature - temp);
 
-    if (diff < minDiff) {
-      minDiff = diff;
-      closestTemp = temp;
+        if (diff < minDiff) {
+            minDiff = diff;
+            closestTemp = temp;
+        }
     }
-  }
 
-  return tempToColor[closestTemp.toString()].toString(16);
+    return tempToColor[closestTemp.toString()].toString(16);
 }
 
+/**
+ * Retrieves the color for a polygon based on the average temperature at its vertices.
+ * 
+ * @param {number} index - The index of the polygon to color.
+ * @returns {string} The color associated with the average temperature of the polygon.
+ */
 async function getPolygonColor(index) {
-    
     let polygon = await loadPolygon(index);
     let coordinates = polygon.features[0].geometry.coordinates[0];
     const x1 = coordinates[0][0]; 
@@ -32,10 +41,15 @@ async function getPolygonColor(index) {
     const weather3 = await findMatchingMeasurePointWeatherData(x3, y3);      
     console.log('Heatmap Polygon ' + index + ' :' + weather1.temp + '|' + weather2.temp + '|' + weather3.temp);
 
-    return getColorForTemperature((weather1.temp+weather2.temp+weather3.temp)/3);
-    
+    return getColorForTemperature((weather1.temp + weather2.temp + weather3.temp) / 3);
 }
 
+/**
+ * Loads polygon data from a file.
+ * 
+ * @param {number} i - The index of the polygon to load.
+ * @returns {Object|null} The loaded polygon data, or null if an error occurred.
+ */
 async function loadPolygon(i) {
     let polygon;
     const path = 'data/polygons/polygon';
@@ -43,43 +57,64 @@ async function loadPolygon(i) {
     try {
         const response = await fetch(`${path}${i}.geojson`);
         if (!response.ok) {
-            throw new Error(`Fehler beim Laden von ${path}${i}.geojson: ${response.status}`);
+            throw new Error(`Error loading ${path}${i}.geojson: ${response.status}`);
         }
-        const data = await response.json();
-        polygon = data;
+        polygon = await response.json();
     } catch (error) {
-        console.error('Fehler beim Laden eines Polygons in der Heatmap:', error);
+        console.error('Error loading a polygon in the heatmap:', error);
     }  
 
     return polygon;
 }
 
-async function addHeatmap() {    
-    for (let i = 0; i < polygonNumber; i++) {
-        
-        let color;  
+let polygonCount = 0; // Global counter for the number of polygons
 
-        color = '#' + await getPolygonColor(i);
-        console.log('Heatmap Polygon ' + i + 'farbe: ' + color);
-        let modelFile = {
-            url: '/Werre/data/polygons/polygon'+ i.toString()+ '.geojson',
-            name: 'polygon_' + i.toString(),
-            fillColor: color,
-            outlineWidth: 2            
-        };  
-        document.querySelector('#measurePoints').swac_comp.loadModelFile(modelFile);
+/**
+ * Adds a heatmap overlay to the map by coloring polygons based on associated weather data.
+ */
+async function addHeatmap() {    
+    let checkbox = document.getElementById('showHeatmap');
+    checkbox.disabled = true; // Disable the checkbox while processing
+
+    polygonCount = 0;
+    let i = 0;
+    while (true) {
+        try {
+            let color = '#' + await getPolygonColor(i);
+            console.log('Heatmap Polygon ' + i + ' Color: ' + color);
+            let modelFile = {
+                url: '/Werre/data/polygons/polygon' + i.toString() + '.geojson',
+                name: 'polygon_' + i.toString(),
+                fillColor: color,
+                outlineWidth: 2,
+                zoomTo: false
+            };
+            document.querySelector('#measurePoints').swac_comp.loadModelFile(modelFile);
+            i++;
+            polygonCount++;
+        } catch (error) {
+            console.log('No more polygons found, process ended at polygon: ' + i);
+            break; // End the loop on error
+        }
     }
+
+    checkbox.disabled = false;  // Re-enable the checkbox after processing
 }
 
+/**
+ * Removes the heatmap overlay from the map.
+ */
 function removeHeatmap() {
-    for (let i = 0 ; i < polygonNumber ; i++) {
+    for (let i = 0; i < polygonCount; i++) {
         document.querySelector('#measurePoints').swac_comp.removeModelFile('polygon_' + i.toString());
     }
+    polygonCount = 0;  // Reset the polygon counter
 }
 
-setTimeout(async function () {
+// Event listeners for adding or removing the heatmap based on user interaction
+document.addEventListener('swac_components_complete', async function() { 
     addHeatmap();
-}, 3000 );
+});
 
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById("showHeatmap").addEventListener("change", function() {
@@ -90,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
 
 
 

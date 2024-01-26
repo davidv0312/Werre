@@ -1,4 +1,5 @@
 
+
 /**
  * Interpolates weather data using barycentric coordinates within a triangle formed by three points.
  * 
@@ -49,10 +50,13 @@ function interpolateWeather(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3
  * @returns {Object[]} An array of polygon data objects.
  */
 async function loadPolygons() {
+    let checkbox = document.getElementById('showHeatmap');
+    checkbox.disabled = true; // Checkbox deaktivieren
     let polygons = [];
     const path = 'data/polygons/polygon';
+    let i = 0;
 
-    for (let i = 0; i <= 20; i++) {
+    while (true) {
         try {
             const response = await fetch(`${path}${i}.geojson`);
             if (!response.ok) {
@@ -60,13 +64,16 @@ async function loadPolygons() {
             }
             const data = await response.json();
             polygons.push(data);
+            i++;
         } catch (error) {
             console.error('Fehler beim Laden eines Polygons:', error);
+            break;  // Beendet die Schleife, wenn ein Fehler auftritt
         }
     }
-
+    checkbox.disabled = false;
     return polygons;
 }
+
 
 
 /**
@@ -111,6 +118,27 @@ async function loadMeasurePoint(filename) {
     }
 }
 
+function formatOpenMeteoData(openMeteoData, x, y) {
+    if (!openMeteoData || !openMeteoData.hourly) {
+        console.error('Ungültige OpenMeteo-Daten');
+        return null;
+    }
+
+    let hourIndex = getCurrentHourIndex();
+    let hourlyData = openMeteoData.hourly;
+    let formattedData = {
+        longitude: x,
+        latitude: y,
+        temp: hourlyData.temperature_2m[hourIndex],
+        soil_temperature_0cm: hourlyData.soil_temperature_0cm[hourIndex],
+        soil_temperature_6cm: hourlyData.soil_temperature_6cm[hourIndex],
+        soil_temperature_18cm: hourlyData.soil_temperature_18cm[hourIndex],
+        soil_temperature_54cm: hourlyData.soil_temperature_54cm[hourIndex]
+    };
+
+    return formattedData;
+}
+
 /**
  * Searches for and returns weather data for a measure point that matches given coordinates.
  * 
@@ -119,15 +147,22 @@ async function loadMeasurePoint(filename) {
  * @returns {Object|null} Weather data for the matching measure point, or null if not found.
  */
 async function findMatchingMeasurePointWeatherData(x1, y1) {
-    for (let i = 1; i <= 15; i++) { // TODO nicht hardcoden
-        const data = await loadMeasurePoint(`mp${i}.json`);
+    let configResponse = await fetch('data/openMeteoData/mpList.json');
+    let config = await configResponse.json();
+    let mpDateien = config.mpDateien;
+
+    for (let filename of mpDateien) {
+        const data = await loadMeasurePoint(filename);
         if (data && data.longitude === x1 && data.latitude === y1) {
-            return data;
+            const openMeteoData = await processCoordinatesToOpenMeteoRequest(data.latitude, data.longitude);
+            return formatOpenMeteoData(openMeteoData, x1, y1);
         }
     }
+
     console.log('Kein passender Messpunkt gefunden');
     return null; 
 }
+
 
 /**
  * Displays interpolated weather data and coordinates in the HTML document. 
@@ -165,7 +200,8 @@ function enterValues(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3, x, y)
 /**
  * Fills the HTML elements with placeholder values when no data is found.
  */
-function enterNoValuesFound() {    
+function enterNoValuesFound() {   
+    document.getElementById('timeOutput').innerHTML = '-';   
     document.getElementById('longOutput').innerHTML = '-';
     document.getElementById('latOutput').innerHTML = '-';
     document.getElementById('tempOutput').innerHTML = '-';

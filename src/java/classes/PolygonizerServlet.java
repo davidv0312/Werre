@@ -83,10 +83,6 @@ public class PolygonizerServlet extends HttpServlet {
                 
                 String polygonPath = path + "web/data/polygons/polygon%d.geojson";
                 polygon.saveGeoJsonFile(String.format(polygonPath, i/4));
-                //response.setContentType("application/json");  
-                //PrintWriter out = response.getWriter();  
-                //out.print(polygon.toGeoJson());
-                //out.flush();
             }
 
         } else {

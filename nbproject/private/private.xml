@@ -3,10 +3,26 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/david/Desktop/Werre/web/js/climateCharts.js</file>
-            <file>file:/C:/Users/david/Desktop/Werre/web/js/addGeoData.js</file>
-            <file>file:/C:/Users/david/Desktop/Werre/web/index.html</file>
-            <file>file:/C:/Users/david/Desktop/Werre/web/js/legend.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/legend.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/addGeoData.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/src/java/classes/Polygon.java</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/temps.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/climateCharts.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/openMeteoFetcher.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/src/java/classes/OpenMeteoJsonFormatter.java</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/heatmap.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/src/java/classes/OpenMeteoJsonUpdateServlet.java</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/dropdown.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/measurePoints.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/location.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/WEB-INF/classes/config.properties</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/data/polygons/polygon9.geojson</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/interpolation.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/js/compClimateCharts.js</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/src/java/classes/PolygonizerServlet.java</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/src/java/classes/BowyerWatson.java</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/data/polygons/polygon18.geojson</file>
+            <file>file:/C:/Users/david/Desktop/externer_server/payara6/glassfish/domains/domain1/docroot/Werre/web/index.html</file>
         </group>
     </open-files>
 </project-private>

@@ -5,12 +5,12 @@
 measurePoints_options = {
     ...measurePoints_options,
     userIcon: {
-        iconUrl: 'SWAC/swac/libs/leaflet/images/marker_person.png',
+        iconUrl: '/SWAC/swac/libs/leaflet/images/marker_person.png',
         iconSize: [25, 50],
         iconAnchor: [12, 50],
         shadowSize: [60, 60],
         shadowAnchor: [20, 60],
-        shadowUrl: 'SWAC/swac/libs/leaflet/images/marker-shadow.png'
+        shadowUrl: '/SWAC/swac/libs/leaflet/images/marker-shadow.png'
     }
 };
 
@@ -30,8 +30,7 @@ measurePoints_options = {
  * @param {number} y - User's current Y-coordinate.
  */    
 function enterValuesLocation(x1, y1, x2, y2, x3, y3, weather1, weather2, weather3, x, y) {
-    
-    document.getElementById('timeOutputLocation').innerHTML = lastDataUpdate;      
+        
     document.getElementById('longOutputLocation').innerHTML = x.toFixed(4);
     document.getElementById('latOutputLocation').innerHTML = y.toFixed(4);
     let interpolatedValue = interpolateWeather(x1, y1, x2, y2, x3, y3, weather1.temp, weather2.temp, weather3.temp, x, y); 
@@ -106,24 +105,26 @@ async function findPolygonLocation(x, y) {
  * On success, it finds the relevant polygon and displays weather data at the user's location.
  * On failure, logs an error message or indicates geolocation is not supported.
  */
-if ("geolocation" in navigator) {
+document.addEventListener('swac_components_complete', function () {
+    if ("geolocation" in navigator) {
 
-  navigator.geolocation.getCurrentPosition(function(position) {
-    console.log("Own Latitude: " + position.coords.latitude);
-    console.log("Own Longitude: " + position.coords.longitude);
+    navigator.geolocation.getCurrentPosition(function(position) {
+        console.log("Own Latitude: " + position.coords.latitude);
+        console.log("Own Longitude: " + position.coords.longitude);
     
-    let latitude = position.coords.latitude;
-    let longitude = position.coords.longitude;
+        let latitude = position.coords.latitude;
+        let longitude = position.coords.longitude;
             
-    findPolygonLocation(longitude, latitude);
+        findPolygonLocation(longitude, latitude);
     
     
-  }, function(error) {
-    console.error("Error Code = " + error.code + " - " + error.message);
-  });
-} else {
-  console.log("Geolocation wird von diesem Browser nicht unterstützt.");
-}
+    }, function(error) {
+        console.error("Error Code = " + error.code + " - " + error.message);
+    });
+    } else {
+    console.log("Geolocation wird von diesem Browser nicht unterstützt.");
+    }
+});
 
 
 

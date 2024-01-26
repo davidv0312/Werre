@@ -11,6 +11,10 @@ import java.util.Locale;
  * This class formats json-Strings recieved from the OpeneMeteoWeatherForecastAPI
  * to json-Strings that can be used with the SWAC-DataShowModal plugin
  */
+/**
+ * @deprecated This class is only used by the class OpenMeteoJsonUpdateServlet, which is deprecated.
+ */
+@Deprecated
 public class OpenMeteoJsonFormatter {
 
     /**

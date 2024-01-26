@@ -1,7 +1,7 @@
 /* 
  * Generates the current date in the format YYYY-MM-DD
  * 
- * @return the current date in the format YYYY-MM-DD
+ * @return The current date in the format YYYY-MM-DD
  */
 function getCurrentDateFormatted() {
     let currentDate = new Date();
@@ -15,12 +15,22 @@ function getCurrentDateFormatted() {
     return year + '-' + month + '-' + day;
 }
 
+/* 
+ * Generates the current hour.
+ * 
+ * @return The current hour.
+ */
+function getCurrentHourIndex() {
+    let currentHour = new Date().getHours();
+    return currentHour;
+}
+
 
 /*
- * Sends a request to the OpenMeteoWeatherForecastAPI with given coordinates and recieves weather-data
+ * Sends a request to the OpenMeteoWeatherForecastAPI with given coordinates and recieves weather-data.
  * 
- * @param {number} latitude - Latitude for the weather-data-location
- * @param {number} longitude - Longitude for the weather-data-location
+ * @param {number} latitude - Latitude for the weather-data-location.
+ * @param {number} longitude - Longitude for the weather-data-location.
  * @returns {Promise<Object>} - A promise that returns an object with OpenMeteoWeatherForecast-data from a successful request.
  */
 async function processCoordinatesToOpenMeteoRequest(latitude, longitude) {

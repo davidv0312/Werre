@@ -36,19 +36,24 @@ function addToMPDropdown(text, value) {
  * Loads measure point data from JSON files and adds them as options to dropdown menus.
  */
 function addMeasurePointsToDropdown() {
-    let n = 15; // TODO -> nicht hardcoden
-    let name = '';
-    for (let i = 1 ; i <= n ; i++) {
-        fetch('data/openMeteoData/' + "mp" + i + '.json')
+    fetch('data/openMeteoData/mpList.json')
         .then(response => response.json())
-        .then(data => {
-            name = data.name;
-            addToMPDropdown("Messpunkt " + i + ": " + name, "mp" + i);
+        .then(config => {
+            let mpDateien = config.mpDateien;
+            mpDateien.forEach(filename => {
+                fetch('data/openMeteoData/' + filename)
+                    .then(response => response.json())
+                    .then(data => {
+                        let name = data.name;
+                        let setId = filename.replace('mp', '').replace('.json', '');
+                        addToMPDropdown("Messpunkt " + setId + ": " + name, "mp" + setId);
+                    })
+                    .catch(error => console.error('Fehler beim Laden der Datei:', error));
+            });
         })
-        .catch(error => console.error('Fehler beim Laden der Datei:', error));
-        
-    }
+        .catch(error => console.error('Fehler beim Laden der Konfigurationsdatei:', error));
 }
+
 
 /**
  * Call addMeasurePointsToDropdown() upon starting the application.
@@ -57,8 +62,29 @@ document.addEventListener('DOMContentLoaded', async function() {
     addMeasurePointsToDropdown();
 });
 
+function displayWeatherData(weatherData) {
+    let hourIndex = getCurrentHourIndex();
+    let hourlyData = weatherData.hourly;
+    let time = lastDataUpdate;
+    let temperature = hourlyData.temperature_2m[hourIndex];
+    let soilTemp0cm = hourlyData.soil_temperature_0cm[hourIndex];
+    let soilTemp6cm = hourlyData.soil_temperature_6cm[hourIndex];
+    let soilTemp18cm = hourlyData.soil_temperature_18cm[hourIndex];
+    let soilTemp54cm = hourlyData.soil_temperature_54cm[hourIndex];
+
+    document.getElementById('timeOutput').innerHTML = time;
+    document.getElementById('longOutput').innerHTML = weatherData.longitude;
+    document.getElementById('latOutput').innerHTML = weatherData.latitude;
+    document.getElementById('tempOutput').innerHTML = temperature;
+    document.getElementById('soilTemp0cmOutput').innerHTML = soilTemp0cm;
+    document.getElementById('soilTemp6cmOutput').innerHTML = soilTemp6cm;
+    document.getElementById('soilTemp18cmOutput').innerHTML = soilTemp18cm;
+    document.getElementById('soilTemp54cmOutput').innerHTML = soilTemp54cm;
+}
+
+
 /**
- * Fetches data for the selected measure point from the related json file and displays various details in the HTML document.
+ * Fetches data for the selected measure point and displays various details in the HTML document.
  */
 document.getElementById("submitBtn").onclick = function() {
     var option = document.getElementById("mpDropdown").value;    
@@ -66,15 +92,13 @@ document.getElementById("submitBtn").onclick = function() {
     fetch('data/openMeteoData/' + option + '.json')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('longOutput').innerHTML = data.longitude;
-            document.getElementById('latOutput').innerHTML = data.latitude;
-            document.getElementById('tempOutput').innerHTML = data.temp;
-            document.getElementById('soilTemp0cmOutput').innerHTML = data.soil_temperature_0cm;
-            document.getElementById('soilTemp6cmOutput').innerHTML = data.soil_temperature_6cm ;
-            document.getElementById('soilTemp18cmOutput').innerHTML = data.soil_temperature_18cm;
-            document.getElementById('soilTemp54cmOutput').innerHTML = data.soil_temperature_54cm;
-    })
-    .catch(error => console.error('Fehler beim Laden der Datei:', error));
+            processCoordinatesToOpenMeteoRequest(data.latitude, data.longitude)
+                .then(weatherData => {
+                    displayWeatherData(weatherData);
+                });
+        })
+        .catch(error => console.error('Fehler beim Laden der Datei:', error));
 };
+
 
 

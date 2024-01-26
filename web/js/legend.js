@@ -2,10 +2,10 @@
 /**
  * Adds the legend for the landcoverunits to the html page.
  */
-setTimeout(function() {
+document.addEventListener('swac_components_complete', function() {
     var legend = document.getElementById('legend');
     legend.src = 'images/legende_bodenbedeckung.png';
-}, 2000); 
+}); 
 
 /**
  * Logic for displaying and undisplaying the legend for the landcoverunits.
@@ -27,23 +27,35 @@ document.addEventListener('DOMContentLoaded', function() {
  * Logic for the checkboxes for flexible displaying and undisplaying a single type of landcoverunits.
  */
 document.addEventListener('DOMContentLoaded', function() {
+    var manualChange = {};
+
+    function updateManualChange(checkboxId, changed) {
+        manualChange[checkboxId] = changed;
+    }
+
+    var checkboxes = document.getElementById("checkboxes").querySelectorAll("input[type=checkbox]");
+    checkboxes.forEach(function(checkbox) {
+        if (checkbox.id !== "all") {
+            checkbox.addEventListener("change", function() {
+                updateManualChange(this.id, true);
+            });
+        }
+    });
+
     document.getElementById("all").addEventListener("change", function() {
         var allChecked = this.checked;
-        var checkboxes = document.getElementById("checkboxes").querySelectorAll("input[type=checkbox]");
-    
-        var allAlreadyChecked = true;
-        for (var checkbox of checkboxes) {
-            if (checkbox.id !== "all" && !checkbox.checked) {
-                allAlreadyChecked = false;
-                break;
-            }
-        }
 
         checkboxes.forEach(function(checkbox) {
             if (checkbox.id !== "all") {
-                checkbox.checked = allAlreadyChecked ? false : allChecked;
-                checkbox.dispatchEvent(new Event('change'));
+                if (!manualChange[checkbox.id]) {
+                    checkbox.checked = allChecked;
+                    checkbox.dispatchEvent(new Event('change'));
+                }
             }
+        });
+
+        checkboxes.forEach(function(checkbox) {
+            updateManualChange(checkbox.id, false);
         });
     });
 

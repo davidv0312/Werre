@@ -5,22 +5,21 @@
     <meta charset="UTF-8">
     <meta name="description" content="Klimamonitoring der Werre-Region">
     <meta name="author" content="Alexander Kruse, Oskar Schaubert, Erik Schneider, David Vehlow">
-    <link rel="stylesheet" type="text/css" href="SWAC/swac/libs/uikit/css/uikit.min.css">
+    <link rel="stylesheet" type="text/css" href="/SWAC/swac/libs/uikit/css/uikit.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <link rel="stylesheet" type="text/css" href="css/legend.css">
     <link rel="stylesheet" type="text/css" href="css/map.css">
     <link rel="stylesheet" type="text/css" href="css/chart.css">
     <link rel="stylesheet" type="text/css" href="css/outputContainer.css">
     <script src='https://unpkg.com/@turf/turf@6/turf.min.js'></script>
-    <script src="SWAC/swac/libs/uikit/js/uikit.min.js"></script>
-    <script src="SWAC/swac/libs/uikit/js/uikit-icons.min.js"></script>
-    <script src="SWAC/swac/swac.js" type="module"></script>
+    <script src="/SWAC/swac/libs/uikit/js/uikit.min.js"></script>
+    <script src="/SWAC/swac/libs/uikit/js/uikit-icons.min.js"></script>
+    <script src="/SWAC/swac/swac.js" type="module"></script>
     <script src="js/openMeteoFetcher.js"></script>
     <script src="js/measurePoints.js"></script>   
     <script src="js/addGeoData.js"></script>
     <script src="js/legend.js"></script>
-    <script src="js/geodataButton.js"></script>
-    <script src="js/climateCharts.js"></script>    
+    <script src="js/climateCharts.js" defer></script>    
     <script src="js/interpolation.js"></script>
     <script src="js/location.js"></script>
     <script src="js/temps.js"></script>
@@ -57,7 +56,6 @@
                 <h3>Werte des eigenen Standorts</h3>
                 <div id="outputContentLocation">
                     <div id="leftOutputLocation">
-                        <div><label>Zeit: </label><span id="timeOutputLocation">-</span></div>
                         <div><label>Längengrad: </label><span id="longOutputLocation">-</span></div>
                         <div><label>Breitengrad: </label><span id="latOutputLocation">-</span></div>
                         <div><label>Temperatur: </label><span id="tempOutputLocation">-</span> °C</div>
@@ -126,22 +124,18 @@
             <div id="dateIntervalInput">
                 <select id="chartDropdown">
                 </select>
-                <input type="date" id="startDate" name="startDate" value="2023-11-05">
-                <input type="date" id="endDate" name="endDate" value="2023-11-07">
+                <input type="date" id="startDate" name="startDate">
+                <input type="date" id="endDate" name="endDate">
                 <select id="interval" name="interval">
                     <option value="hourly" selected>Stündlich</option>
                     <option value="daily">Täglich</option>
-                </select>
-                <select id="dataSelection">
-                    <option value="temp">Temperatur</option>
-                    <option value="rain">Regen</option>
                 </select>
                 <button id="ChartSubmitBtn">Diagramm laden</button>
                 <br>
             </div>
             <h3>Temperatur in °C</h3>  
             <div id="climateChartsTemp" swa="Charts"></div>
-            <br><br><br><br><br><br><br><br><br><br><br><br>
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
             <h3>Niederschlagsmenge innerhalb der letzten Stunde in mm</h3>  
             <div id="climateChartsRain" swa="Charts"></div>  
         </div>
@@ -151,12 +145,14 @@
                 <h2>Vergleich zwischen Messpunkten</h2>
             </div>
             <div id="compDateIntervalInput">
-                <select id="compDropdown1">
+                Messpunkt 1: <select id="compDropdown1">
                 </select>
-                <select id="compDropdown2">        
+                <br>
+                Messpunkt 2: <select id="compDropdown2">        
                 </select>
-                <input type="date" id="compStartDate" name="startDate" value="2023-11-05">
-                <input type="date" id="compEndDate" name="endDate" value="2023-11-07">
+                <br>
+                <input type="date" id="compStartDate" name="startDate">
+                <input type="date" id="compEndDate" name="endDate">
                 <select id="compInterval" name="interval">
                     <option value="hourly" selected>Stündlich</option>
                     <option value="daily">Täglich</option>
@@ -166,8 +162,8 @@
             <br>  
             <h3>Temperatur in °C</h3>  
             <div id="compClimateChartsTemp" swa="Charts"></div>   
-            <br><br><br><br><br><br><br><br><br><br><br><br>
-            <h3>Niederschlagsmenge innerhalb der letzten Stunde in mm</h3>  
+            <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            <h3>Niederschlagsmenge am gesamten Tag in mm</h3>  
             <div id="compClimateChartsRain" swa="Charts"></div>   
         </div>
     <div id="countdownTimer" style="position: fixed; left: 0; bottom: 0; font-size: small; z-index: 1000;"></div>

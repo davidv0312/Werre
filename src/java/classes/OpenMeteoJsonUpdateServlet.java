@@ -21,6 +21,11 @@ import com.google.gson.JsonObject;
  * This class writes a json-String from the OpenMeteoWeatherForecastAPI into the file that was used 
  * to recieve Weather Data from OpeneMeteo from Coordinates (latitude and longitude)
  */
+/**
+ * @deprecated This class is no longer used as its functionality has been 
+ * replaced by new implementations. The logger is still utilized in another class.
+ */
+@Deprecated
 @WebServlet("/updateJson")
 public class OpenMeteoJsonUpdateServlet extends HttpServlet {
 
@@ -79,12 +84,12 @@ public class OpenMeteoJsonUpdateServlet extends HttpServlet {
         JsonElement updatedJsonElement = JsonParser.parseString(jsonString);
         Gson gson = new Gson();
         String decodedJson = gson.toJson(updatedJsonElement);
-        try {            
-            Files.write(Paths.get(path), decodedJson.getBytes());
-            LOGGER.info("JSON-String wurde in die Datei geschrieben: " + decodedJson);
-        } catch (IOException e) {
-            LOGGER.severe("Fehler beim Schreiben in die Datei: " + e.getMessage());
-        }
+        //try {            
+            //Files.write(Paths.get(path), decodedJson.getBytes());
+        //    LOGGER.info("JSON-String wurde in die Datei geschrieben: " + decodedJson);
+        //} catch (IOException e) {
+        //    LOGGER.severe("Fehler beim Schreiben in die Datei: " + e.getMessage());
+        //}
     }
     
    

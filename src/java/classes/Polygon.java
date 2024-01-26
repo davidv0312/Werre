@@ -25,11 +25,6 @@ public class Polygon {
 
     public String toGeoJson() {
 
-        // Ensure that the first coordinate is added again at the end
-        //List<List<Double>> closedCoordinates = new ArrayList<>(coordinates);
-        //List<Double> firstPoint = coordinates.get(0);
-        //closedCoordinates.add(new ArrayList<>(firstPoint));
-
        // Wrap the polygon in a Feature
         JsonObject featureJson = new JsonObject();
         featureJson.addProperty("type", "Feature");

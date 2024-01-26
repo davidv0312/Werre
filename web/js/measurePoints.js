@@ -1,4 +1,3 @@
-
 /*
  * The time where the measure points got last updated
  */
@@ -44,36 +43,53 @@ function updateLastDataUpdate() {
     lastDataUpdate = lastDataUpdate = formattedDay+ '-' + formattedMonth + '-' + year + ', ' + hour + ':00 Uhr';
 }
 
+
 /*
- * Adds measure points from data/openMeteoData with up-to-date-data to the map
+ * Adds measure points with up-to-date-data to the map
  */
 async function updateMeasurePointData() {
-    setTimeout(async function() { 
-        let map = document.querySelector('#measurePoints');   
-        let n = 15; // Anzahl mp-Dateien -> TODO            
-        for (let i = 1; i <= n; i++) {
-            let filename = 'mp' + i + '.json';
-            let filepath = 'data/openMeteoData/' + filename;
-            
-            try {
-                
-                let currentData = await sendCoordinatesToAPI(filepath);
-                
-                if (currentData) {  
-                    
-                    sendJsonData(currentData, filename);
-                    
-                    map.swac_comp.addDataFromReference('ref://openMeteoData/' + filename); 
-                    
-                    console.log('x = ' + currentData.latitude + '| y = ' + currentData.longitude);
-                }
-            } catch (error) {
-                console.error('Fehler:', error);
-            }            
-        }   
-        updateLastDataUpdate();
-    }, 1000); 
+    let map = document.querySelector('#measurePoints');
+
+    let configResponse = await fetch('data/openMeteoData/mpList.json');
+    let config = await configResponse.json();
+    let mpDateien = config.mpDateien;
+
+    for (let filename of mpDateien) {
+        let filepath = 'data/openMeteoData/' + filename;
+        try {
+            let response = await fetch(filepath);
+            let mpData = await response.json();
+
+            let weatherData = await processCoordinatesToOpenMeteoRequest(mpData.latitude, mpData.longitude);
+            let currentData = await sendCoordinatesToAPI(filepath);
+            let currentHourIndex = getCurrentHourIndex();
+            let setId = filename.replace('mp', '').replace('.json', '');
+            let setName = mpData.name || `Messpunkt_${setId}`;
+            let set = {
+                id: setId,
+                name: setName,
+                latitude: mpData.latitude,
+                longitude: mpData.longitude,
+                time: weatherData.hourly.time[currentHourIndex],
+                temp: weatherData.hourly.temperature_2m[currentHourIndex] + " °C",
+                soil_temperature_0cm: weatherData.hourly.soil_temperature_0cm[currentHourIndex] + " °C",
+                soil_temperature_6cm: weatherData.hourly.soil_temperature_6cm[currentHourIndex] + " °C",
+                soil_temperature_18cm: weatherData.hourly.soil_temperature_18cm[currentHourIndex] + " °C",
+                soil_temperature_54cm: weatherData.hourly.soil_temperature_54cm[currentHourIndex] + " °C"
+            };
+            await sendJsonData(currentData, filename);
+            map.swac_comp.removeSets(setName, setId);
+            map.swac_comp.addSet(setName, set);
+            console.log('Set hinzugefügt:', set);
+
+        } catch (error) {
+            console.error('Fehler beim Laden oder Verarbeiten der Daten:', error);
+        }            
+    }   
+    updateLastDataUpdate();
 }
+
+
 
 /*
  * Calls updateLastDataUpdate() at every full hour. Needs to be called once to start.
@@ -111,33 +127,35 @@ function updateMeasurePointsSchedule() {
 /*
  * Calls updateMeasurePointData() and updateMeasurePointsSchedule() at the startup of the application.
  */
-document.addEventListener('DOMContentLoaded', async function() { 
+document.addEventListener('swac_components_complete', async function() { 
     updateMeasurePointData();
     updateMeasurePointsSchedule();
 });
 
+
 /*
- * Sends json-data and the filename to write to to the sever endpoint /updateJson in the class OpenMeteoJsonUpdateServlet
+ * Sends json-data and the filename to write to to the sever endpoint /getPolygons to create and write polygon files
  * 
- * @ {Object} currentData - The json data to send
- * @ {string} filename - The filename of the file to write to
+ * @ {Object} - currentData the json data to send
+ * @ {string} - the filename of the file to write to
  */
 function sendJsonData(currentData, filename) {
     const dataToSend = {
         currentData: currentData,  
         filename: filename
     };
-
-    fetch('/Werre/updateJson', {
+    
+    fetch('/Werre/getPolygons', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(dataToSend)
-    })
-    .then(response => response.text())
-    .then(data => console.log(data))
-    .catch((error) => console.error('Error:', error));
+
+        })
+        .catch(error => {
+            console.error('Fehler beim Senden der Anfrage:', error);
+    });
 }
 
 /*
@@ -158,6 +176,5 @@ async function sendCoordinatesToAPI(filepath) {
         console.error('Fehler beim Laden der JSON-Datei:', error);
     }
 }
-
 
 
